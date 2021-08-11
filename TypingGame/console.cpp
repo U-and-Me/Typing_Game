@@ -117,3 +117,12 @@ void logo() {
 	gotoxy(69, 18); cout << "#";
 	gotoxy(71, 18); cout << " ";
 }
+
+void Menu() {
+	gotoxy(11, 30); cout << "1. 게임 시작";
+	gotoxy(31, 30); cout << "2. 도움말";
+	gotoxy(51, 30); cout << "3. 랭킹보기";
+	gotoxy(71, 30); cout << "4. 종료하기";
+
+	gotoxy(18, 35); cout << "**** 번호를 입력하세요 ****";
+}
