@@ -20,6 +20,7 @@ int main() {
 		gotoxy(55, 35); cin >> User_ans; // 입력받기
 		system("cls");
 
+
 		switch (User_ans) {
 		case 1: // 게임 시작
 			Play();
@@ -28,12 +29,11 @@ int main() {
 			game_help();
 			break;
 		case 3: // 랭킹보기
-
 			break;
-		case 4: // 종료하기 => 게임 종료화면으로 다시 돌아감
-			return 0; break;
+		case 4: // 종료하기
+			exit(0); 
 		default:
-			gotoxy(30, 20); ; cout << "해당 번호는 존재하지 않습니다!";
+			gotoxy(30, 25); ; cout << "해당 번호는 존재하지 않습니다!";
 			Sleep(1000);
 
 
@@ -43,6 +43,6 @@ int main() {
 
 	} // End of While
 
-
+	return 0;
 }
 
