@@ -1,16 +1,23 @@
 #include <iostream>
 #include "TypingGame.h"
 
+/*
+1단계 - 보통
+2단계 - 단어 난이도
+3단계 - 속도, 단어 난이도
+*/
+
 #define wordCount 150 // 단어 개수
 
 time_t startTime = 0, endTime = 0; // 게임 시간 제한
 double user_time; // 게임 시간
-int word_speed = 1500;
+int word_speed = 10000;
 
 void wordPrint();
 void wordScan();
 void GameTime();
 void Score();
+void clean();
 
 
 char words[][150] = { "include", "print", "game", "music", "rain", "link", "book", "mouse","word", "phone",
@@ -96,12 +103,12 @@ void wordPrint() {
 	int y = rand() % 33 + 4;
 	int w = rand() % wordCount;
 	int c = rand() % 3;
+	//int Rcolor = rand() % 3;
 
 	if (wordc[w] != 1) { // 중복체크
-		wordc[w] = 1;
+		wordc[w] = 1; // 중복
 		check--;
 
-		gotoxy(x, y);
 		for (int i = 0; i < 3; i++) {
 			switch (i) {
 			case 0: remember[w][i] = x; break;
@@ -109,8 +116,17 @@ void wordPrint() {
 			case 2: remember[w][i] = c; break;
 			}
 		}
-		
-		if (user_time >= ChangeColor && user_time <= ChangeColor +5 ) {
+		if (user_time >= ChangeColor + 6) {
+			for (int i = 0; i < wordCount; i++) {
+				if (remember[i][2] > 2) {
+					int x = remember[i][0];
+					int y = remember[i][1];
+
+					gotoxy(x, y); cout << "          "; // 단어 지우기
+				}
+			}
+		}
+		if (user_time >= ChangeColor && user_time <= ChangeColor + 5 ) {
 			gotoxy(30, 43); cout << "5초동안 글자색이 바껴서 나옵니다.";
 			gotoxy(x, y);
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Changec[c]);
@@ -120,19 +136,21 @@ void wordPrint() {
 		else {
 			gotoxy(30, 43); cout << "                                       ";
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color[c]);
+			gotoxy(x, y);
 			cout << words[w]; // 단어 출력
 		}
-
-
-		
 	}
 
 }
 
 void wordScan() {
-		GameTime();
+	int sec = 0;
+	GameTime();
 
-		gotoxy(30, 40); cout << "입력 : ";
+	gotoxy(30, 40); cout << "입력 : ";
+
+	while (sec < word_speed) {
+		sec++;
 
 		if (_kbhit()) {
 			char scan[20];
@@ -141,6 +159,7 @@ void wordScan() {
 
 			for (int i = 0; i < wordCount; i++) {
 				if (strcmp(scan, words[i]) == 0) { // 입력한 단어가 맞을 때
+					wordc[i] = 2; // 단어 맞췄을 때
 					int x = remember[i][0];
 					int y = remember[i][1];
 					int color = remember[i][2];
@@ -160,7 +179,8 @@ void wordScan() {
 				gotoxy(2, 3); cout << "현재 점수 : " << user_score;
 			}
 
-		}	
+		}
+	}
 }
 
 void GameTime() {
@@ -178,7 +198,7 @@ void GameTime() {
 			Sleep(1500);
 			system("cls");
 			level++; // 2단계
-			user_time = 0; startTime = 0; endTime = 0; word_speed = 2000;
+			user_time = 0; startTime = 0; endTime = 0; word_speed = 7000;
 			for (int i = 0; i < wordCount; i++)
 				wordc[i] = 0;
 			Play();
@@ -188,7 +208,7 @@ void GameTime() {
 			Sleep(1500);
 			system("cls");
 			level++; // 3단계
-			user_time = 0; startTime = 0; endTime = 0; word_speed = 1000;
+			user_time = 0; startTime = 0; endTime = 0; word_speed = 4000;
 			for (int i = 0; i < wordCount; i++)
 				wordc[i] = 0;
 			Play();
@@ -204,6 +224,17 @@ void GameTime() {
 
 	}
 
+}
+
+void clean() { // 랜덤시간이 다 되면 바뀐 색의 단어들 모두 지우기
+	for (int i = 0; i < wordCount; i++) {
+		if (remember[i][2] > 2) { 
+			int x = remember[i][0];
+			int y = remember[i][1];
+
+			gotoxy(x, y); cout << "          "; // 단어 지우기
+		}
+	}
 }
 
 void Score() {
