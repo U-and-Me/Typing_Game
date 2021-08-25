@@ -36,6 +36,7 @@ char words[][150] = { "include", "print", "game", "music", "rain", "link", "book
 "double", "open", "position", "tourists", "receive", "product", "refund", "follow", "session", "discuss",
 "quick", "duties", "price", "recent", "visit", "decline", "need", "difficult", "very", "develop"
 };
+const char End[][4] = { "end", "END" };
 
 int wordc[150]; // 단어 중복 방지
 int user_score = 0; // 사용자 점수
@@ -160,14 +161,36 @@ void wordScan() {
 	GameTime();
 
 	gotoxy(30, 40); cout << "입력 : ";
-	//gotoxy(37, 40); cout << "                                  ";
 
 	while (sec < word_speed) {
 		sec++;
+
 		if (_kbhit()) {
-			char scan[20];
 			gotoxy(37, 40);  cin >> scan;
 			gotoxy(37, 40); cout << "                                  ";
+
+			for (int i = 0; i < 2; i++) {
+				if (strcmp(scan, End[i]) == 0) {
+					system("cls"); screen();
+					gotoxy(30, 20); cout << "정말 게임을 종료하시겠습니까?(y, n) ";
+					char ans; cin >> ans;
+					if (ans == 'y' || ans == 'Y') {
+						gotoxy(30, 20); cout << "                                             ";
+						gotoxy(39, 20); cout << "*** 게 임 종 료 ***";
+						Sleep(1500);
+						gotoxy(32, 20); cout << "2초 후 자동으로 메인으로 넘어갑니다.";
+						Sleep(2000);
+						system("cls");
+						main();
+					}
+					else {
+						gotoxy(30, 20); cout << "                                             ";
+						wordPrint();
+					}
+
+					
+				}
+			}
 
 			for (int i = 0; i < wordCount; i++) {
 				if (strcmp(scan, words[i]) == 0) { // 입력한 단어가 맞을 때
@@ -195,6 +218,7 @@ void wordScan() {
 					gotoxy(2, 3); cout << "현재 점수 : " << user_score;
 
 				}
+				
 				
 			}
 

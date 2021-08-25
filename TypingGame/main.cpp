@@ -36,7 +36,7 @@ int main() {
 		default:
 			gotoxy(30, 25); ; cout << "해당 번호는 존재하지 않습니다!";
 			Sleep(1000);
-
+			main();
 
 		}
 
