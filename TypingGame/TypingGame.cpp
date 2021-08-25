@@ -38,23 +38,26 @@ char words[][150] = { "include", "print", "game", "music", "rain", "link", "book
 };
 
 int wordc[150]; // 단어 중복 방지
-int user_score = 0;
-int bestScore = 0;
+int user_score = 0; // 사용자 점수
+int bestScore = 0; // 최고 점수
 int level = 1; // 총 3단계
 int color[3] = { 1, 2, 4 }; // 파, 초, 빨
 int Changec[3] = { 11, 13, 14 }; // 하늘, 보라, 노랑
 int remember[wordCount][3] = { 0, }; // 점수체크
 char scan[20]; // 단어 입력받기
-char name[10];
-int speed = 1500;
-int ChangeColor;
+char name[10]; // 사용자 이름
+int ChangeColor; // 바뀔 단어색 정하기
+int Sign[3]; // 0 : 음수, 1 : 양수
+int ChangeScore[3] = { 0, 0, 0 }; // 각 색의 바뀐 점수
+int Csign; // 부호 정하는 변수
+int Cscore; // 점수 정하는 변수
 
 void screen() {
 	for (int i = 1; i < 44; i++) {
 		gotoxy(1, i); cout << "|";
-		gotoxy(94, i); cout << "|";
+		gotoxy(98, i); cout << "|";
 	}
-	for (int i = 1; i < 95; i++) {
+	for (int i = 1; i < 99; i++) {
 		gotoxy(i, 1); cout << "-";
 		gotoxy(i, 37); cout << "-";
 		gotoxy(i, 44); cout << "-";
@@ -65,7 +68,7 @@ void screen() {
 void Play() {
 
 	srand((unsigned)time(0)); // 단어색 바뀔 시간 정하기
-	ChangeColor = rand() % 17 + 3; // 3초에서 20초 사이
+	ChangeColor = rand() % 17 + 3; // 3초에서 19초 사이
 
 	screen();
 
@@ -126,6 +129,15 @@ void wordPrint() {
 				}
 			}
 		}
+		if (user_time <= ChangeColor) {
+			for (int i = 0; i < 3; i++) {
+				Csign = rand() % 2;
+				Cscore = rand() % 451 + 50; // 50 ~ 500점 사이
+				Sign[i] = Csign;
+				ChangeScore[i] = Cscore;
+			}
+	
+		}
 		if (user_time >= ChangeColor && user_time <= ChangeColor + 5 ) {
 			gotoxy(30, 43); cout << "5초동안 글자색이 바껴서 나옵니다.";
 			gotoxy(x, y);
@@ -148,10 +160,10 @@ void wordScan() {
 	GameTime();
 
 	gotoxy(30, 40); cout << "입력 : ";
+	//gotoxy(37, 40); cout << "                                  ";
 
 	while (sec < word_speed) {
 		sec++;
-
 		if (_kbhit()) {
 			char scan[20];
 			gotoxy(37, 40);  cin >> scan;
@@ -170,13 +182,20 @@ void wordScan() {
 					case 0: user_score += 100; break;
 					case 1: user_score += 150; break;
 					case 2: user_score += 200; break;
-					case 3: user_score -= 50; break;
-					case 4: user_score += 130; break;
-					case 5: user_score -= 100; break;
+					case 3: if (Sign[0] == 0) user_score -= ChangeScore[0]; 
+							else user_score += ChangeScore[0];
+							break;			
+					case 4:if (Sign[1] == 0) user_score -= ChangeScore[1];
+						  else user_score += ChangeScore[1];
+							break;
+					case 5:if (Sign[2] == 0) user_score -= ChangeScore[2];
+						  else user_score += ChangeScore[2];
+							break;
 					}
+					gotoxy(2, 3); cout << "현재 점수 : " << user_score;
 
 				}
-				gotoxy(2, 3); cout << "현재 점수 : " << user_score;
+				
 			}
 
 		}

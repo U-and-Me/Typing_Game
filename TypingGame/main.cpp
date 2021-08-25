@@ -6,7 +6,8 @@
 
 int main() {
 	// 기본 설정
-	system("mode con: cols=96 lines=46"); // 가로 : cols  세로 : lines
+	system("mode con: cols=100 lines=45"); // 가로 : cols  세로 : lines
+	system("title TypingGame");
 	CursorView();
 
 	int User_ans; // 사용자 입력

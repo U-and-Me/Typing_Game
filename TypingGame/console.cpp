@@ -5,14 +5,59 @@ void gotoxy(int x, int y) {
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
+
+                                   
+
 void logo() {
 	system("cls");
-
+	
 	for (int i = 16; i <= 76; i++) {
 		gotoxy(i, 6); cout << "-";
 		gotoxy(i, 20); cout << "-";
 	}
 
+	gotoxy(25, 10); cout << " _____ __   ________  _____  _   _  _____ ";
+	gotoxy(25, 11); cout << "|_   _|\\ \\ / /| ___ \\|_   _|| \\ | ||  __ \\";
+	gotoxy(25, 12); cout << "  | |   \\ V / | |_/ /  | |  |  \\| || |  \\/";
+	gotoxy(25, 13); cout << "  | |    \\ /  |  __/   | |  | . ` || | __ ";
+	gotoxy(25, 14); cout << "  | |    | |  | |     _| |_ | |\\  || |_\\ \\";
+	gotoxy(25, 15); cout << "  \\_/    \\_/  \\_|     \\___/ \\_| \\_/ \\____/";
+
+		
+                                                                                                 
+ 
+
+
+
+
+
+
+                                          
+                                          
+
+  
+        
+           
+  
+
+
+
+
+
+
+     
+           
+          
+          
+ 
+ 
+  
+
+
+
+
+
+	/*
 	// T
 	for (int i = 21; i <= 32; i++) {
 		gotoxy(i, 8); cout << "#";
@@ -116,6 +161,7 @@ void logo() {
 	gotoxy(68, 18); cout << "#";
 	gotoxy(69, 18); cout << "#";
 	gotoxy(71, 18); cout << " ";
+	*/
 }
 
 void Menu() {
