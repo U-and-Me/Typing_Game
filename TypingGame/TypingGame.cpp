@@ -1,24 +1,18 @@
 #include <iostream>
+#include <thread>
 #include "TypingGame.h"
-
-/*
-1단계 - 보통
-2단계 - 단어 난이도
-3단계 - 속도, 단어 난이도
-*/
+#define HAVE_STRUCT_TIMESPEC
 
 #define wordCount 150 // 단어 개수
 
 time_t startTime = 0, endTime = 0; // 게임 시간 제한
 double user_time; // 게임 시간
-int word_speed = 10000;
+int word_speed = 10000; // 단어 뜨
 
 void wordPrint();
 void wordScan();
 void GameTime();
 void Score();
-void clean();
-
 
 char words[][150] = { "include", "print", "game", "music", "rain", "link", "book", "mouse","word", "phone",
 "august", "season", "studio", "listen", "jaw", "ear", "saddle", "ska", "as","reward",
@@ -92,8 +86,11 @@ void Play() {
 	startTime = clock();
 
 	while (true) {
-		wordPrint(); // 단어출력
+		
+		wordPrint();// 단어출력
 		wordScan(); // 단어 입력
+		
+
 	}
 
 }
@@ -107,7 +104,6 @@ void wordPrint() {
 	int y = rand() % 33 + 4;
 	int w = rand() % wordCount;
 	int c = rand() % 3;
-	//int Rcolor = rand() % 3;
 
 	if (wordc[w] != 1) { // 중복체크
 		wordc[w] = 1; // 중복
@@ -269,17 +265,6 @@ void GameTime() {
 
 }
 
-void clean() { // 랜덤시간이 다 되면 바뀐 색의 단어들 모두 지우기
-	for (int i = 0; i < wordCount; i++) {
-		if (remember[i][2] > 2) { 
-			int x = remember[i][0];
-			int y = remember[i][1];
-
-			gotoxy(x, y); cout << "          "; // 단어 지우기
-		}
-	}
-}
-
 void Score() {
 	gotoxy(30, 16); cout << "============= 게임 결과 =============";
 	gotoxy(30, 17); cout << "==                                 ";
@@ -294,3 +279,4 @@ void Score() {
 	gotoxy(65, 21); cout << "== ";
 	gotoxy(30, 22); cout << "=====================================";
 }
+
