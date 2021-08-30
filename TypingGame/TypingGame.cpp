@@ -7,7 +7,7 @@
 
 time_t startTime = 0, endTime = 0; // 게임 시간 제한
 double user_time; // 게임 시간
-int word_speed = 10000; // 단어 뜨
+int word_speed = 10000; // 단어 뜨는 속도
 
 void wordPrint();
 void wordScan();
