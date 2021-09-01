@@ -142,6 +142,7 @@
     <ClCompile Include="console.cpp" />
     <ClCompile Include="game_help.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="Remove.cpp" />
     <ClCompile Include="TypingGame.cpp" />
   </ItemGroup>

@@ -1,5 +1,4 @@
 #include <iostream>
-#include <thread>
 #include "TypingGame.h"
 #define HAVE_STRUCT_TIMESPEC
 
@@ -33,19 +32,18 @@ char words[][150] = { "include", "print", "game", "music", "rain", "link", "book
 const char End[][4] = { "end", "END" };
 
 int wordc[150]; // 단어 중복 방지
-int user_score = 0; // 사용자 점수
-int bestScore = 0; // 최고 점수
 int level = 1; // 총 3단계
 int color[3] = { 1, 2, 4 }; // 파, 초, 빨
 int Changec[3] = { 11, 13, 14 }; // 하늘, 보라, 노랑
 int remember[wordCount][3] = { 0, }; // 점수체크
 char scan[20]; // 단어 입력받기
-char name[10]; // 사용자 이름
 int ChangeColor; // 바뀔 단어색 정하기
 int Sign[3]; // 0 : 음수, 1 : 양수
 int ChangeScore[3] = { 0, 0, 0 }; // 각 색의 바뀐 점수
 int Csign; // 부호 정하는 변수
 int Cscore; // 점수 정하는 변수
+char name[10]; // 사용자 이름
+int user_score = 0; // 사용자 점수
 
 void screen() {
 	for (int i = 1; i < 44; i++) {
@@ -86,11 +84,8 @@ void Play() {
 	startTime = clock();
 
 	while (true) {
-		
 		wordPrint();// 단어출력
-		wordScan(); // 단어 입력
-		
-
+		wordScan(); // 단어 입력		
 	}
 
 }

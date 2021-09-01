@@ -30,6 +30,7 @@ int main() {
 			game_help();
 			break;
 		case 3: // 랭킹보기
+			Rank();
 			break;
 		case 4: // 종료하기
 			exit(0); 
