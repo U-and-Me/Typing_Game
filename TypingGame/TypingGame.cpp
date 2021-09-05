@@ -42,6 +42,7 @@ int Sign[3]; // 0 : 음수, 1 : 양수
 int ChangeScore[3] = { 0, 0, 0 }; // 각 색의 바뀐 점수
 int Csign; // 부호 정하는 변수
 int Cscore; // 점수 정하는 변수
+
 char name[10]; // 사용자 이름
 int user_score = 0; // 사용자 점수
 
@@ -159,6 +160,7 @@ void wordScan() {
 		if (_kbhit()) {
 			gotoxy(37, 40);  cin >> scan;
 			gotoxy(37, 40); cout << "                                  ";
+
 
 			for (int i = 0; i < 2; i++) {
 				if (strcmp(scan, End[i]) == 0) {
