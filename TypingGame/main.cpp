@@ -10,9 +10,10 @@ int main() {
 	system("title TypingGame");
 	CursorView();
 
+	// DB연동 테스트
+	//printf("%s\n", mysql_get_client_info());
+	
 	int User_ans; // 사용자 입력
-
-
 
 	while (1) {
 		logo();
@@ -20,7 +21,6 @@ int main() {
 		gotoxy(18, 35); cout << "**** 번호를 입력하세요 ****";
 		gotoxy(55, 35); cin >> User_ans; // 입력받기
 		system("cls");
-
 
 		switch (User_ans) {
 		case 1: // 게임 시작
@@ -40,11 +40,8 @@ int main() {
 			main();
 
 		}
-
-
-
 	} // End of While
-
+	
 	return 0;
 }
 

@@ -3,6 +3,7 @@
 
 
 void rank_logo();
+void rank_insert(); // 사용자 이름, 점수 저장
 
 
 void Rank() {
@@ -19,6 +20,10 @@ void Rank() {
         logo();
         Menu();
     }
+
+}
+
+void rank_insert() {
 
 }
 
