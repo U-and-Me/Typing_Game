@@ -1,8 +1,6 @@
 #include <Windows.h>
 #include <conio.h>
 #include <iostream>
-#include <mysql.h>
-#pragma comment(lib, "libmySQL.lib")
 
 using namespace std;
 

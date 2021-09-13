@@ -1,12 +1,13 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include "TypingGame.h"
-
 
 void rank_logo();
 void rank_insert(); // 사용자 이름, 점수 저장
 
 
 void Rank() {
+
     char key;
 
     rank_logo();

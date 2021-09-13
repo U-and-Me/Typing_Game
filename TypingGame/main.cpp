@@ -4,14 +4,14 @@
 #include <stdlib.h>
 #include "TypingGame.h"
 
+
 int main() {
 	// 기본 설정
 	system("mode con: cols=100 lines=45"); // 가로 : cols  세로 : lines
 	system("title TypingGame");
 	CursorView();
 
-	// DB연동 테스트
-	//printf("%s\n", mysql_get_client_info());
+
 	
 	int User_ans; // 사용자 입력
 
