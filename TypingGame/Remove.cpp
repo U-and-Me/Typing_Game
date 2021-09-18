@@ -1,7 +1,10 @@
 #include "TypingGame.h"
 
 void CursorView() {
-	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
-	cursorInfo.bVisible = FALSE;
-	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+	HANDLE hConsole;
+	CONSOLE_CURSOR_INFO ConsoleCursor;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	ConsoleCursor.bVisible = 0;
+	ConsoleCursor.dwSize = 1;
+	SetConsoleCursorInfo(hConsole, &ConsoleCursor);
 }

@@ -1,6 +1,8 @@
 #include <Windows.h>
 #include <conio.h>
 #include <iostream>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -13,6 +15,3 @@ void Play(); // 게임시작
 void screen();
 void game_help(); // 도움말
 void Rank(); // 랭킹
-
-extern char name[10]; // 사용자 이름
-extern int user_score; // 사용자 점수

@@ -1,9 +1,18 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <algorithm>
+#include <vector>
 #include "TypingGame.h"
 
+using namespace std;
+
 void rank_logo();
-void rank_insert(); // 사용자 이름, 점수 저장
+
+int len = 0; // 파일에 있는 데이터 개수
+string users[100];
+int scores[100];
+int x1[3] = { 17, 46, 77 };
+int x2[3] = { 18, 47, 78 };
 
 
 void Rank() {
@@ -11,6 +20,58 @@ void Rank() {
     char key;
 
     rank_logo();
+
+    ifstream fin1;
+    fin1.open("rank.txt");
+
+    // 데이터 개수
+    string temp;
+    while (!fin1.eof()) {
+        if (getline(fin1, temp)) {
+            len++;
+        }
+    }
+    fin1.close();
+
+    // 파일 읽기
+    ifstream fin2;
+    fin2.open("rank.txt");
+
+    if (fin2.is_open()) {
+        for (int i = 0; i < len; i++) {
+            fin2 >> users[i];
+            fin2 >> scores[i];
+        }
+    }
+    else {
+        gotoxy(2, 40);
+        cout << "파일을 찾을 수 없습니다." << endl;
+    }
+    
+    fin2.close();
+
+    // 오름차순 정렬
+    for (int i = 0; i < len; i++) {
+        for (int j = 0; j < len - i; j++) {
+            if (scores[j] < scores[j+1]) {
+                int temp = scores[j];
+                scores[j] = scores[j + 1];
+                scores[j + 1] = temp;
+                string temp2 = users[j];
+                users[j] = users[j + 1];
+                users[j + 1] = temp2;
+            }
+        }
+    }
+
+
+    for (int i = 0; i < 3; i++) {
+        gotoxy(x1[i], 26);
+        cout << users[i];
+        gotoxy(x2[i], 27);
+        cout << scores[i];
+
+    }
 
 
     gotoxy(2, 42); cout << "** 메인 메뉴로 돌아가려면 아무키나 누르세요 **";
@@ -22,11 +83,10 @@ void Rank() {
         Menu();
     }
 
-}
 
-void rank_insert() {
 
 }
+
 
 void rank_logo() {
 	
