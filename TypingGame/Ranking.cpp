@@ -1,7 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include <algorithm>
-#include <vector>
 #include "TypingGame.h"
 
 using namespace std;
