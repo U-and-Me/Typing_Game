@@ -64,6 +64,7 @@ void Rank() {
 
 
     for (int i = 0; i < 3; i++) {
+        if (users[i] == " " || scores[i] == 0) continue;
         gotoxy(x1[i], 26);
         cout << users[i];
         gotoxy(x2[i], 27);

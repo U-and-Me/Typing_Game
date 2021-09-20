@@ -51,6 +51,7 @@ char name[10]; // 사용자 이름
 int user_score = 0; // 사용자 점수
 int tt = 0;
 
+
 void saveScore() {
 	ofstream fout("rank.txt", ios::app);
 	fout << name << "\t" << user_score << endl;
@@ -94,35 +95,34 @@ void Play() {
 	system("cls"); screen();
 
 
-
 	startTime = clock(); 	
-	/*
+	
 	while (true) {
-		//cur_time = clock();
-		//tt = (double)(cur_time - startTime) / CLK_TCK;
-		//wordPrint();
-		//wordRemove();
-		//GameTime();
 
+		cur_time = clock();
+		tt = ((double)(cur_time - startTime) / CLOCKS_PER_SEC);
+
+		wordPrint();
+		wordRemove();
+		GameTime();
 		wordScan();
 
-	}*/
+		Sleep(word_speed); // 단어 뜨는 속도 조절
 
+	}
+	/*
 	while (true) {
 		wordPrint();
 		wordScan();
 		wordRemove();
 		GameTime();
 	}
-	
+	*/
 }
 
 void wordPrint() {
 		srand((unsigned)time(0));
 
-
-		//thread tScan = thread(wordScan);
-		//tScan.join();
 
 			//int check = wordCount;
 			int x = rand() % 80 + 3;
@@ -183,19 +183,22 @@ void wordPrint() {
 }
 
 void wordScan() {
+
 		int sec = 0;
 
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
 		gotoxy(3, 2); cout << "Level : " << level;
 		gotoxy(3, 3); cout << "현재 점수 : " << user_score;
-		gotoxy(78, 2); cout << "게임 시간 : " << 25 - user_time;
+		
+		gotoxy(82, 2); cout << "게임 시간 : " << 25-tt;
 		gotoxy(30, 40); cout << "입력 : ";
 
 		while (sec < word_speed) {
 			sec++;
 
 			if (_kbhit()) {
+
 				gotoxy(37, 40);  cin >> scan;
 				gotoxy(37, 40); cout << "                                  ";
 
@@ -262,7 +265,6 @@ void wordScan() {
 
 void wordRemove() {
 
-
 	//thread tScan = thread(wordScan);
 	//tScan.join();
 
@@ -280,7 +282,6 @@ void wordRemove() {
 }
 
 void GameTime() {
-
 
 	//thread tScan = thread(wordScan);
 	//tScan.join();
