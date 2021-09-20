@@ -82,8 +82,6 @@ void Rank() {
         Menu();
     }
 
-
-
 }
 
 

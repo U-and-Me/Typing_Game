@@ -190,7 +190,6 @@ void wordScan() {
 
 		gotoxy(3, 2); cout << "Level : " << level;
 		gotoxy(3, 3); cout << "현재 점수 : " << user_score;
-		
 		gotoxy(82, 2); cout << "게임 시간 : " << 25-tt;
 		gotoxy(30, 40); cout << "입력 : ";
 
