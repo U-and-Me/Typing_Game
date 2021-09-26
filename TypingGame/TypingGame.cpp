@@ -55,6 +55,7 @@ int user_score = 0; // 사용자 점수
 int Rcount[wordCount] = { 0, };
 int ind1 = 0; // wordPrint() 에서 사용
 int ind2 = 0; // wordRemove()에서 사용
+int game = 1;
 
 
 void saveScore() {
@@ -103,7 +104,7 @@ void Play() {
 	//thread t2(Start_Game);
 
 	startTime = clock(); 
-
+	game = 1;
 	Start_Game();
 
 
@@ -125,24 +126,14 @@ void Play() {
 void Start_Game() {
 
 	Info();
-	//thread t1(timer);
+	thread t1(timer);
 	thread t2(wordPrint);
 	thread t3(wordRemove);
 	thread t4(GameTime);
 	thread t5(wordScan);
 
-	//while (true) {
-
-		//wordPrint();
-		//wordRemove();
-		//GameTime();
-		//wordScan();
-		//Sleep(word_speed); // 단어 뜨는 속도 조절
-
-	//}
-
 	t2.join();
-	//t1.join();
+	t1.join();
 	t3.join();
 	t4.join();
 	t5.join();
@@ -150,14 +141,16 @@ void Start_Game() {
 
 void timer() {
 	int tt = 25;
-	gotoxy(90, 2);
-	cout << tt;
-	Sleep(1000); tt--;
+	while (tt != 0) {
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+		gotoxy(94, 2); cout << tt;
+		Sleep(1000); tt--;
+	}
 }
 
 void Info() {
 	gotoxy(3, 2); cout << "Level : " << level;
-	gotoxy(3, 3); cout << "현재 점수 : " << user_score;
+	gotoxy(3, 3); cout << "현재 점수 : 0";
 	gotoxy(82, 2); cout << "게임 시간 : ";
 	gotoxy(30, 40); cout << "입력 : ";
 }
@@ -165,7 +158,7 @@ void Info() {
 void wordPrint() {
 		srand((unsigned)time(0));
 
-		while (true) {
+		while (game != 0) {
 
 			//int check = wordCount;
 			int x = rand() % 80 + 3;
@@ -232,14 +225,10 @@ void wordScan() {
 
 		int sec = 0;
 
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-
-
-
-		while (true) {
+		while (game != 0) {
 			//sec++;
-
 			if (_kbhit()) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 				gotoxy(37, 40);  cin >> scan;
 				gotoxy(37, 40); cout << "                                  ";
 
@@ -290,7 +279,8 @@ void wordScan() {
 							break;
 						default: break;
 						}
-
+						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+						gotoxy(15, 3); cout << user_score;
 					}
 
 
@@ -317,7 +307,7 @@ void wordRemove() {
 			}
 		}
 	*/
-	while (true) {
+	while (game != 0) {
 		Sleep(remove_speed);
 		int index = Rcount[ind2++];
 		int x = remem_W[index][0];
@@ -338,7 +328,7 @@ void GameTime() {
 		user_time = (double)(endTime - startTime) / (CLOCKS_PER_SEC);
 
 		if (user_time > 25) {
-			
+			game = 0;
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 			system("cls"); screen();
 			Score();
@@ -378,22 +368,7 @@ void GameTime() {
 		}
 	}
 }
-/*
-void start_thread() {
-	thr_exit = 0;
-	thr_id = pthread_create(&p_thread, NULL, t_func, NULL); // 스레드 생성
-}
-void end_thread() {
-	thr_exit = 1;
-	pthread_cancel(p_thread);
-}
-void *t_func(void* data) {
-	while (!thr_exit) {
-		wordScan();
-	}
-	return 0;
-}
-*/
+
 void Score() {
 	gotoxy(30, 16); cout << "============= 게임 결과 =============";
 	gotoxy(30, 17); cout << "==                                 ";
