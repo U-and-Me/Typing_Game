@@ -35,6 +35,7 @@ char words[][150] = { "include", "print", "game", "music", "rain", "link", "book
 "double", "open", "position", "tourists", "receive", "product", "refund", "follow", "session", "discuss",
 "quick", "duties", "price", "recent", "visit", "decline", "need", "difficult", "very", "develop"
 };
+
 const char End[][4] = { "end", "END" }; // 게임 끝내기
 
 
@@ -51,10 +52,11 @@ int Csign; // 부호 정하는 변수
 int Cscore; // 점수 정하는 변수
 char name[10]; // 사용자 이름
 int user_score = 0; // 사용자 점수
-int Rcount[wordCount] = { 0, };
+int Rcount[wordCount] = { 0, }; // 단어 지우는 배열
 int ind1 = 0; // wordPrint() 에서 사용
 int ind2 = 0; // wordRemove()에서 사용
-int game = 1, print = 1, inword = 1;
+
+int game = 1, print = 1, timeout = 1;
 
 
 void saveScore() {
@@ -63,7 +65,9 @@ void saveScore() {
 	fout.close();
 }
 
+
 void screen() {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	for (int i = 1; i < 44; i++) {
 		gotoxy(1, i); cout << "|";
 		gotoxy(98, i); cout << "|";
@@ -89,7 +93,6 @@ void Play() {
 		cin >> name;
 		system("cls"); screen();
 	}
-	
 
 	gotoxy(43, 20); cout << "3초 후 시작!";	
 	Sleep(1000);
@@ -108,51 +111,54 @@ void Play() {
 void Start_Game() {
 
 	Info();
-	game = 1; print = 1; inword = 1;
-
-
+	game = 1; print = 1;
+	timeout = 1;
+	
 	thread t1(timer);
+
 	thread t2(wordPrint);
 	thread t3(wordRemove);
 	thread t4(GameTime);
 	thread t5(wordScan);
 
-	t5.join();
-	t2.join();
 	t1.join();
+
+	t2.join();
+	t5.join();
 	t3.join();
 	t4.join();
+	
 }
 
 void timer() {
 	int tt = 25;
-	while (tt != 0 && game != 0) {
+	while (tt != 0 && timeout != 0) {
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		gotoxy(94, 2); cout << tt << " ";
 		Sleep(1000); tt--;
+		//cout << "실행중  " << tt ;
 	}
 }
 
 void Info() {
 	gotoxy(3, 2); cout << "Level : " << level;
 	gotoxy(3, 3); cout << "현재 점수 : " << user_score;
-	gotoxy(82, 2); cout << "게임 시간 : ";
+	gotoxy(82, 2); cout << "게임 시간 : 25";
 	gotoxy(30, 40); cout << "입력 : ";
 }
 
 void wordPrint() {
 		srand((unsigned)time(0));
 		while (print != 0) {
-			//int check = wordCount;
+
 			int x = rand() % 80 + 3; // 3 ~ 82
 			int y = rand() % 32 + 5; // 5 ~ 36
-			int w = rand() % wordCount;
-			int c = rand() % 3;
+			int w = rand() % wordCount; // 0 ~ 149
+			int c = rand() % 3; // 0 ~ 2
 
 
 			if (wordc[w] != 1 || wordc[w] != 2) { // 중복체크
 				wordc[w] = 1; // 중복
-				//check--;
 
 				for (int i = 0; i < 3; i++) {
 					switch (i) {
@@ -184,14 +190,12 @@ void wordPrint() {
 					}
 
 				}
-				//inword = 0;
 				if (user_time >= ChangeColor && user_time <= ChangeColor + 5) {
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-					gotoxy(30, 43); cout << "5초동안 글자색이 바뀌어 나옵니다.";
+					//gotoxy(30, 43); cout << "5초동안 글자색이 바뀌어 나옵니다.";
 					gotoxy(x, y);
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Changec[c]);
 					cout << words[w]; // 단어 출력
-					//inword = 1;
 					remem_W[w][2] = c + 3;
 				}
 				else {
@@ -199,24 +203,20 @@ void wordPrint() {
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color[c]);
 					gotoxy(x, y);
 					cout << words[w]; // 단어 출력
-					//inword = 1;
 				}
 			}
-			//inword = 1;
 			Sleep(word_speed); // 단어 뜨는 속도 조절
 		}
+
 }
 
 void wordScan() {
 		while (game != 0) {
-
-			//sec++;
+			
 			if (_kbhit()) {
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-				//print = 0;
 				gotoxy(37, 40);  cin >> scan;
 				gotoxy(37, 40); cout << "                                  ";
-				//print = 1;
 				for (int i = 0; i < 2; i++) {
 					if (strcmp(scan, End[i]) == 0) {
 						game = 0; print = 0;
@@ -224,9 +224,9 @@ void wordScan() {
 						gotoxy(30, 20); cout << "정말 게임을 종료하시겠습니까?(y, n) ";
 						char ans; cin >> ans;
 						if (ans == 'y' || ans == 'Y') {
-							
+							timeout = 0;
 							gotoxy(30, 20); cout << "                                             ";
-							gotoxy(43, 20); cout << "*** 게 임 종 료 ***";
+							gotoxy(40, 20); cout << "*** 게 임 종 료 ***";
 							Sleep(1500);
 							gotoxy(32, 20); cout << "2초 후 자동으로 메인으로 넘어갑니다.";
 							Sleep(2000);
@@ -277,7 +277,6 @@ void wordScan() {
 			for (int i = 0; i < 20; i++)
 				scan[i] = NULL;
 		}
-
 }
 
 void wordRemove() {
@@ -286,25 +285,21 @@ void wordRemove() {
 			int index = Rcount[ind2++];
 			int x = remem_W[index][0];
 			int y = remem_W[index][1];
-		//	print = 0;
 			gotoxy(x, y); cout << "          ";
 			remem_W[index][2] = 100; // 점수 오르는거 방지
-		//	print = 1;
 		}
-		print = 1;
 		Sleep(remove_speed);
 	}
 }
 
 void GameTime() {
 	while (true) {
-		//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		endTime = clock();
 		user_time = (double)(endTime - startTime) / (CLOCKS_PER_SEC);
 
 		if (user_time > 25) {
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-			game = 0; print = 0; ind1 = 0; ind2 = 0;
+			game = 0; print = 0; ind1 = 0; ind2 = 0; timeout = 0;
 			system("cls"); screen();
 			Score();
 			Sleep(3000);
@@ -331,6 +326,7 @@ void GameTime() {
 				Play();
 			}
 			else {
+				level = 1;
 				saveScore();
 				gotoxy(37, 20); cout << "*** 게 임 종 료 ***";
 				Sleep(1500);
@@ -345,6 +341,7 @@ void GameTime() {
 }
 
 void Score() {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	gotoxy(30, 16); cout << "============= 게임 결과 =============";
 	gotoxy(30, 17); cout << "==                                 ";
 	gotoxy(65, 17); cout << "== ";

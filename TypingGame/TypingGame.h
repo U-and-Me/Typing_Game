@@ -15,3 +15,4 @@ void Play(); // 게임시작
 void screen();
 void game_help(); // 도움말
 void Rank(); // 랭킹
+void Word();

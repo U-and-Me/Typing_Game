@@ -158,6 +158,7 @@
     <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="Remove.cpp" />
     <ClCompile Include="TypingGame.cpp" />
+    <ClCompile Include="word.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TypingGame.h" />

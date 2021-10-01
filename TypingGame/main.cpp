@@ -34,6 +34,9 @@ int main() {
 			break;
 		case '4': // 종료하기
 			exit(0); 
+		case 'w': 
+			Word();
+			break;
 		default:
 			gotoxy(30, 25); ; cout << "해당 번호는 존재하지 않습니다!";
 			Sleep(1000);
