@@ -16,3 +16,5 @@ void screen();
 void game_help(); // µµ¿ò¸»
 void Rank(); // ·©Å·
 void Word();
+
+extern int Wcount;

@@ -1,8 +1,11 @@
 #define HAVE_STRUCT_TIMESPEC
 #include <iostream>
 #include <thread>
+#include <mutex>
 #include "TypingGame.h"
 #define wordCount 150 // 단어 개수
+
+std::mutex m_thread_mutex;
 
 time_t startTime = 0, endTime = 0, cur_time = 0, pass_time = 0; // 게임 시간 제한
 double user_time; // 사용자 게임 시간
@@ -65,7 +68,6 @@ void saveScore() {
 	fout.close();
 }
 
-
 void screen() {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	for (int i = 1; i < 44; i++) {
@@ -77,7 +79,7 @@ void screen() {
 		gotoxy(i, 37); cout << "-";
 		gotoxy(i, 44); cout << "-";
 	}
-
+	
 }
 
 void Play() {
@@ -153,7 +155,7 @@ void wordPrint() {
 
 			int x = rand() % 80 + 3; // 3 ~ 82
 			int y = rand() % 32 + 5; // 5 ~ 36
-			int w = rand() % wordCount; // 0 ~ 149
+			int w = rand() % Wcount; // 0 ~ 149
 			int c = rand() % 3; // 0 ~ 2
 
 
@@ -171,7 +173,7 @@ void wordPrint() {
 				Rcount[ind1++] = w;
 
 				if (user_time >= ChangeColor + 6) {
-					for (int i = 0; i < wordCount; i++) {
+					for (int i = 0; i < Wcount; i++) {
 						if (remem_W[i][2] > 2) {
 							int x = remem_W[i][0];
 							int y = remem_W[i][1];
@@ -190,6 +192,7 @@ void wordPrint() {
 					}
 
 				}
+
 				if (user_time >= ChangeColor && user_time <= ChangeColor + 5) {
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 					//gotoxy(30, 43); cout << "5초동안 글자색이 바뀌어 나옵니다.";
@@ -204,8 +207,11 @@ void wordPrint() {
 					gotoxy(x, y);
 					cout << words[w]; // 단어 출력
 				}
+
+
 			}
 			Sleep(word_speed); // 단어 뜨는 속도 조절
+
 		}
 
 }
@@ -242,7 +248,7 @@ void wordScan() {
 					}
 				}
 
-				for (int i = 0; i < wordCount; i++) {
+				for (int i = 0; i < Wcount; i++) {
 					if (strcmp(scan, words[i]) == 0) { // 입력한 단어가 맞을 때
 						wordc[i] = 2; // 단어 맞췄을 때
 						int x = remem_W[i][0];
@@ -310,7 +316,7 @@ void GameTime() {
 				system("cls");
 				level++; // 2단계
 				user_time = 0; startTime = 0; endTime = 0; word_speed = 1000; remove_speed = 2000;
-				for (int i = 0; i < wordCount; i++)
+				for (int i = 0; i < Wcount; i++)
 					wordc[i] = 0;
 				Play();
 
@@ -321,7 +327,7 @@ void GameTime() {
 				system("cls");
 				level++; // 3단계
 				user_time = 0; startTime = 0; endTime = 0; word_speed = 800; remove_speed = 1300;
-				for (int i = 0; i < wordCount; i++)
+				for (int i = 0; i < Wcount; i++)
 					wordc[i] = 0;
 				Play();
 			}

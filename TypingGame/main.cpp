@@ -22,6 +22,8 @@ int main() {
 		gotoxy(55, 35); cin >> User_ans; // 입력받기
 		system("cls");
 
+		Word();
+
 		switch (User_ans) {
 		case '1': // 게임 시작
 			Play();
