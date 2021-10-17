@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -18,3 +19,4 @@ void Rank(); // ·©Å·
 void Word();
 
 extern int Wcount;
+extern vector<string> wordList;

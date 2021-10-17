@@ -4,7 +4,10 @@
 
 
 extern int Wcount = 0;
+extern vector<string> wordList(0);
+
 void Word(); // 단어 읽어오기
+void bringWords();
 
 void Word() {
 	ifstream read;
@@ -17,16 +20,22 @@ void Word() {
 			Wcount++;
 		}
 	}
-
-	//cout << Wcount << endl;
+	bringWords();
+	//cout << wordList.size() << endl;
 
 	//Sleep(4000);
 }
 
-void sortWord() {
+void bringWords() {
 	ifstream fin1;
 	fin1.open("word.txt", ios::in);
 
+	string temp;
+	while (!fin1.eof()) {
+		if (getline(fin1, temp)) {
+			wordList.push_back(temp);
+		}
+	}
 
 }
 

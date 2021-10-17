@@ -3,9 +3,7 @@
 #include <thread>
 #include <mutex>
 #include "TypingGame.h"
-#define wordCount 150 // 단어 개수
 
-std::mutex m_thread_mutex;
 
 time_t startTime = 0, endTime = 0, cur_time = 0, pass_time = 0; // 게임 시간 제한
 double user_time; // 사용자 게임 시간
@@ -21,33 +19,20 @@ void saveScore(); // 점수 저장
 void Start_Game();
 void timer();
 void Info();
-
-char words[][150] = { "include", "print", "game", "music", "rain", "link", "book", "mouse","word", "phone",
-"august", "season", "studio", "listen", "jaw", "ear", "saddle", "ska", "as","reward",
-"reader", "lad", "upland", "sky", "bet", "thief", "hungry", "nothing", "language","finish",
-"each", "several", "lock", "silence", "save", "choir", "zerosum", "icefall","step", "problem",
-"center", "upmost", "fake", "keek", "safe", "lass", "reason", "dawn","since", "net",
-"computer", "plan", "animal", "icon", "engineer", "assent", "runaway", "jump", "alarm", "fence",
-"company", "member", "score", "often", "club", "pocket", "arrive", "collection", "keycase", "visitor",
-"vanish", "jazz", "close", "everybody", "advice", "which", "twice", "cut", "rubberize", "clue",
-"camera", "headache", "prize", "wealthy", "holiday", "throw", "south", "fight", "earhole", "enough",
-"journey", "baby", "loudly", "label", "know", "vagrancy", "meat", "song", "neathouse", "teenager",
-"lighting", "Olympic", "prison", "machine", "windy", "natalist", "rest", "news", "break", "fast",
-"age", "attent", "half", "gangle", "kennel", "wash", "sand", "new", "continue", "script",
-"live", "share", "short", "long", "accept", "submit", "report", "react", "rise", "proceed",
-"double", "open", "position", "tourists", "receive", "product", "refund", "follow", "session", "discuss",
-"quick", "duties", "price", "recent", "visit", "decline", "need", "difficult", "very", "develop"
-};
+void bringWords(); // 단어목록 가져오기
 
 const char End[][4] = { "end", "END" }; // 게임 끝내기
-
-
-int wordc[150]; // 단어 중복 방지
+//int wordc[150]; // 단어 중복 방지
+vector<int> wordc(150);
 int level = 1; // 총 3단계
 int color[3] = { 1, 2, 4 }; // 파, 초, 빨
 int Changec[3] = { 11, 13, 14 }; // 하늘, 보라, 노랑
-int remem_W[wordCount][3] = { 0, }; // 점수체크
-char scan[20]; // 단어 입력받기
+//int remem_W[count][3] = { 0, }; // 점수체크
+vector<int> remem_X(150);
+vector<int> remem_Y(150);
+vector<int> remem_C(150);
+
+string scan; // 단어 입력받기
 int ChangeColor; // 바뀔 단어색 정하기
 int Sign[3]; // 0 : 음수, 1 : 양수
 int ChangeScore[3] = { 0, 0, 0 }; // 각 색의 바뀐 점수
@@ -55,11 +40,9 @@ int Csign; // 부호 정하는 변수
 int Cscore; // 점수 정하는 변수
 char name[10]; // 사용자 이름
 int user_score = 0; // 사용자 점수
-int Rcount[wordCount] = { 0, }; // 단어 지우는 배열
+//int Rcount[count] = { 0, }; // 단어 지우는 배열
+vector<int> Rcount(150);
 int ind1 = 0; // wordPrint() 에서 사용
-int ind2 = 0; // wordRemove()에서 사용
-
-int game = 1, print = 1, timeout = 1;
 
 
 void saveScore() {
@@ -79,7 +62,6 @@ void screen() {
 		gotoxy(i, 37); cout << "-";
 		gotoxy(i, 44); cout << "-";
 	}
-	
 }
 
 void Play() {
@@ -113,8 +95,6 @@ void Play() {
 void Start_Game() {
 
 	Info();
-	game = 1; print = 1;
-	timeout = 1;
 	
 	thread t1(timer);
 
@@ -130,11 +110,13 @@ void Start_Game() {
 	t3.join();
 	t4.join();
 	
+
+	
 }
 
 void timer() {
 	int tt = 25;
-	while (tt != 0 && timeout != 0) {
+	while (tt != 0) {
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		gotoxy(94, 2); cout << tt << " ";
 		Sleep(1000); tt--;
@@ -151,7 +133,7 @@ void Info() {
 
 void wordPrint() {
 		srand((unsigned)time(0));
-		while (print != 0) {
+		while (1) {
 
 			int x = rand() % 80 + 3; // 3 ~ 82
 			int y = rand() % 32 + 5; // 5 ~ 36
@@ -162,22 +144,16 @@ void wordPrint() {
 			if (wordc[w] != 1 || wordc[w] != 2) { // 중복체크
 				wordc[w] = 1; // 중복
 
-				for (int i = 0; i < 3; i++) {
-					switch (i) {
-					case 0: remem_W[w][i] = x; break;
-					case 1: remem_W[w][i] = y; break;
-					case 2: remem_W[w][i] = c; break;
-					}
-				}
-
-				Rcount[ind1++] = w;
+				remem_X[w] = x;
+				remem_Y[w] = y;
+				remem_C[w] = c;
 
 				if (user_time >= ChangeColor + 6) {
 					for (int i = 0; i < Wcount; i++) {
-						if (remem_W[i][2] > 2) {
-							int x = remem_W[i][0];
-							int y = remem_W[i][1];
-							remem_W[i][2] = 100;
+						if (remem_C[i] > 2) {
+							int x = remem_X[i];
+							int y = remem_Y[i];
+							remem_C[i] = 100;
 
 							gotoxy(x, y); cout << "          "; // 단어 지우기
 						}
@@ -198,14 +174,15 @@ void wordPrint() {
 					//gotoxy(30, 43); cout << "5초동안 글자색이 바뀌어 나옵니다.";
 					gotoxy(x, y);
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Changec[c]);
-					cout << words[w]; // 단어 출력
-					remem_W[w][2] = c + 3;
+					cout << wordList.at(w); // 단어 출력
+					remem_C[w] = c + 3;
+					Rcount.push_back(w);
 				}
 				else {
 					gotoxy(30, 43); cout << "                                       ";
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color[c]);
 					gotoxy(x, y);
-					cout << words[w]; // 단어 출력
+					cout << wordList.at(w); // 단어 출력
 				}
 
 
@@ -217,20 +194,18 @@ void wordPrint() {
 }
 
 void wordScan() {
-		while (game != 0) {
+		while (1) {
 			
 			if (_kbhit()) {
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 				gotoxy(37, 40);  cin >> scan;
 				gotoxy(37, 40); cout << "                                  ";
 				for (int i = 0; i < 2; i++) {
-					if (strcmp(scan, End[i]) == 0) {
-						game = 0; print = 0;
+					if (scan == End[i]) {
 						system("cls"); screen();
 						gotoxy(30, 20); cout << "정말 게임을 종료하시겠습니까?(y, n) ";
 						char ans; cin >> ans;
 						if (ans == 'y' || ans == 'Y') {
-							timeout = 0;
 							gotoxy(30, 20); cout << "                                             ";
 							gotoxy(40, 20); cout << "*** 게 임 종 료 ***";
 							Sleep(1500);
@@ -249,11 +224,11 @@ void wordScan() {
 				}
 
 				for (int i = 0; i < Wcount; i++) {
-					if (strcmp(scan, words[i]) == 0) { // 입력한 단어가 맞을 때
+					if (scan == wordList.at(i)) { // 입력한 단어가 맞을 때
 						wordc[i] = 2; // 단어 맞췄을 때
-						int x = remem_W[i][0];
-						int y = remem_W[i][1];
-						int color = remem_W[i][2];
+						int x = remem_X[i];
+						int y = remem_Y[i];
+						int color = remem_C[i];
 
 						gotoxy(x, y); cout << "          "; // 단어 지우기
 
@@ -280,21 +255,20 @@ void wordScan() {
 				}
 
 			} // end of if
-			for (int i = 0; i < 20; i++)
-				scan[i] = NULL;
+			
 		}
 }
 
 void wordRemove() {
-	while (game != 0) {
-		if (ind1 >= ind2) {
-			int index = Rcount[ind2++];
-			int x = remem_W[index][0];
-			int y = remem_W[index][1];
-			gotoxy(x, y); cout << "          ";
-			remem_W[index][2] = 100; // 점수 오르는거 방지
-		}
+	while (1) {
 		Sleep(remove_speed);
+
+		int index = Rcount.at(ind1);
+		int x = remem_X[index];
+		int y = remem_Y[index];
+		gotoxy(x, y); cout << "          ";
+		remem_C[index] = 100; // 점수 오르는거 방지
+		ind1++;	
 	}
 }
 
@@ -305,7 +279,6 @@ void GameTime() {
 
 		if (user_time > 25) {
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-			game = 0; print = 0; ind1 = 0; ind2 = 0; timeout = 0;
 			system("cls"); screen();
 			Score();
 			Sleep(3000);
