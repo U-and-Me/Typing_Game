@@ -20,8 +20,7 @@ void game_help() {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);
 	gotoxy(14, 22); cout << " ▷ 빨간색 : 200점" << endl;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-	gotoxy(14, 25); cout << "3. 중간에 나가고 싶다면 입력창에 END(end)를 작성해주세요" << endl;
-	gotoxy(14, 28); cout << "** 메인 메뉴로 돌아가려면 아무키나 누르세요 **";
+	gotoxy(14, 25); cout << "** 메인 메뉴로 돌아가려면 아무키나 누르세요 **";
 
 	key = _getch(); // 키보드 입력
 

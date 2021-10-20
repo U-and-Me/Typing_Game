@@ -4,6 +4,7 @@
 #include <mutex>
 #include "TypingGame.h"
 
+std::mutex mu1, mu2;
 
 time_t startTime = 0, endTime = 0, cur_time = 0, pass_time = 0; // 게임 시간 제한
 double user_time; // 사용자 게임 시간
@@ -19,9 +20,7 @@ void saveScore(); // 점수 저장
 void Start_Game();
 void timer();
 void Info();
-void bringWords(); // 단어목록 가져오기
 
-const char End[][4] = { "end", "END" }; // 게임 끝내기
 //int wordc[150]; // 단어 중복 방지
 vector<int> wordc(150);
 int level = 1; // 총 3단계
@@ -43,7 +42,9 @@ int user_score = 0; // 사용자 점수
 //int Rcount[count] = { 0, }; // 단어 지우는 배열
 vector<int> Rcount(150);
 int ind1 = 0; // wordPrint() 에서 사용
+int ind2 = 0;
 
+int ip = 1, op = 1, wr = 1;
 
 void saveScore() {
 	ofstream fout("rank.txt", ios::app);
@@ -88,14 +89,15 @@ void Play() {
 	system("cls"); screen();
 
 	startTime = clock(); 
+	Info();
 	Start_Game();
 
 }
 
 void Start_Game() {
-
-	Info();
 	
+	ip = 1; op = 1;
+
 	thread t1(timer);
 
 	thread t2(wordPrint);
@@ -117,8 +119,11 @@ void Start_Game() {
 void timer() {
 	int tt = 25;
 	while (tt != 0) {
+		mu1.lock();
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		gotoxy(94, 2); cout << tt << " ";
+		gotoxy(38, 40); //cout << scan;
+		mu1.unlock();
 		Sleep(1000); tt--;
 		//cout << "실행중  " << tt ;
 	}
@@ -133,8 +138,7 @@ void Info() {
 
 void wordPrint() {
 		srand((unsigned)time(0));
-		while (1) {
-
+		while (op) {
 			int x = rand() % 80 + 3; // 3 ~ 82
 			int y = rand() % 32 + 5; // 5 ~ 36
 			int w = rand() % Wcount; // 0 ~ 149
@@ -143,10 +147,11 @@ void wordPrint() {
 
 			if (wordc[w] != 1 || wordc[w] != 2) { // 중복체크
 				wordc[w] = 1; // 중복
-
 				remem_X[w] = x;
 				remem_Y[w] = y;
 				remem_C[w] = c;
+
+				Rcount[ind1++] = w;
 
 				if (user_time >= ChangeColor + 6) {
 					for (int i = 0; i < Wcount; i++) {
@@ -168,7 +173,7 @@ void wordPrint() {
 					}
 
 				}
-
+				mu2.lock();
 				if (user_time >= ChangeColor && user_time <= ChangeColor + 5) {
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 					//gotoxy(30, 43); cout << "5초동안 글자색이 바뀌어 나옵니다.";
@@ -184,44 +189,21 @@ void wordPrint() {
 					gotoxy(x, y);
 					cout << wordList.at(w); // 단어 출력
 				}
-
-
+				gotoxy(38, 40); //cout << scan;
+				mu2.unlock();
 			}
 			Sleep(word_speed); // 단어 뜨는 속도 조절
-
 		}
 
 }
 
 void wordScan() {
-		while (1) {
-			
+		while (ip) {
+			//gotoxy(2, 0); cout << "                                  ";
 			if (_kbhit()) {
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 				gotoxy(37, 40);  cin >> scan;
 				gotoxy(37, 40); cout << "                                  ";
-				for (int i = 0; i < 2; i++) {
-					if (scan == End[i]) {
-						system("cls"); screen();
-						gotoxy(30, 20); cout << "정말 게임을 종료하시겠습니까?(y, n) ";
-						char ans; cin >> ans;
-						if (ans == 'y' || ans == 'Y') {
-							gotoxy(30, 20); cout << "                                             ";
-							gotoxy(40, 20); cout << "*** 게 임 종 료 ***";
-							Sleep(1500);
-							gotoxy(32, 20); cout << "2초 후 자동으로 메인으로 넘어갑니다.";
-							Sleep(2000);
-							system("cls");
-							main();
-						}
-						else {
-							gotoxy(30, 20); cout << "                                             ";
-							Start_Game();
-						}
-
-
-					}
-				}
 
 				for (int i = 0; i < Wcount; i++) {
 					if (scan == wordList.at(i)) { // 입력한 단어가 맞을 때
@@ -230,8 +212,7 @@ void wordScan() {
 						int y = remem_Y[i];
 						int color = remem_C[i];
 
-						gotoxy(x, y); cout << "          "; // 단어 지우기
-
+						gotoxy(x, y); cout << "         "; // 단어 지우기
 						switch (color) {
 						case 0: user_score += 100; break;
 						case 1: user_score += 150; break;
@@ -255,20 +236,19 @@ void wordScan() {
 				}
 
 			} // end of if
+			//scan = "";
 			
 		}
 }
 
 void wordRemove() {
-	while (1) {
+	while (wr) {
 		Sleep(remove_speed);
-
-		int index = Rcount.at(ind1);
+		int index = Rcount.at(ind2++);
 		int x = remem_X[index];
 		int y = remem_Y[index];
 		gotoxy(x, y); cout << "          ";
 		remem_C[index] = 100; // 점수 오르는거 방지
-		ind1++;	
 	}
 }
 
@@ -278,6 +258,7 @@ void GameTime() {
 		user_time = (double)(endTime - startTime) / (CLOCKS_PER_SEC);
 
 		if (user_time > 25) {
+			ip = 0; op = 0; wr = 0;
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 			system("cls"); screen();
 			Score();
