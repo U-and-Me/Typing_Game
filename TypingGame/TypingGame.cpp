@@ -4,7 +4,7 @@
 #include <mutex>
 #include "TypingGame.h"
 
-std::mutex mu1, mu2;
+std::mutex mu1, mu2, mu3;
 
 time_t startTime = 0, endTime = 0, cur_time = 0, pass_time = 0; // 게임 시간 제한
 double user_time; // 사용자 게임 시간
@@ -96,7 +96,7 @@ void Play() {
 
 void Start_Game() {
 	
-	ip = 1; op = 1;
+	ip = 1; op = 1; wr = 1;
 
 	thread t1(timer);
 
@@ -173,7 +173,7 @@ void wordPrint() {
 					}
 
 				}
-				mu2.lock();
+				//mu2.lock();
 				if (user_time >= ChangeColor && user_time <= ChangeColor + 5) {
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 					//gotoxy(30, 43); cout << "5초동안 글자색이 바뀌어 나옵니다.";
@@ -189,8 +189,8 @@ void wordPrint() {
 					gotoxy(x, y);
 					cout << wordList.at(w); // 단어 출력
 				}
-				gotoxy(38, 40); //cout << scan;
-				mu2.unlock();
+				//gotoxy(38, 40); //cout << scan;
+				//mu2.unlock();
 			}
 			Sleep(word_speed); // 단어 뜨는 속도 조절
 		}
@@ -201,6 +201,7 @@ void wordScan() {
 		while (ip) {
 			//gotoxy(2, 0); cout << "                                  ";
 			if (_kbhit()) {
+				mu3.lock();
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 				gotoxy(37, 40);  cin >> scan;
 				gotoxy(37, 40); cout << "                                  ";
@@ -234,7 +235,7 @@ void wordScan() {
 
 
 				}
-
+				mu3.unlock();
 			} // end of if
 			//scan = "";
 			
@@ -244,10 +245,11 @@ void wordScan() {
 void wordRemove() {
 	while (wr) {
 		Sleep(remove_speed);
+
 		int index = Rcount.at(ind2++);
 		int x = remem_X[index];
 		int y = remem_Y[index];
-		gotoxy(x, y); cout << "          ";
+		gotoxy(x, y); cout << "         ";
 		remem_C[index] = 100; // 점수 오르는거 방지
 	}
 }
