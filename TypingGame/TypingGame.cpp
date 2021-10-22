@@ -40,7 +40,7 @@ int Cscore; // 점수 정하는 변수
 char name[10]; // 사용자 이름
 int user_score = 0; // 사용자 점수
 //int Rcount[count] = { 0, }; // 단어 지우는 배열
-vector<int> Rcount(150);
+vector<int> Rcount(150, 0);
 int ind1 = 0; // wordPrint() 에서 사용
 int ind2 = 0;
 
@@ -71,6 +71,7 @@ void Play() {
 	srand((unsigned)time(0)); // 단어색 바뀔 시간 정하기
 	ChangeColor = rand() % 17 + 3; // 3초에서 19초 사이
 
+
 	screen();
 
 	if (level == 1) {
@@ -96,7 +97,7 @@ void Play() {
 
 void Start_Game() {
 	
-	ip = 1; op = 1; wr = 1;
+	ip = 1; op = 1;
 
 	thread t1(timer);
 
@@ -115,14 +116,13 @@ void Start_Game() {
 
 	
 }
-
 void timer() {
 	int tt = 25;
 	while (tt != 0) {
 		mu1.lock();
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		gotoxy(94, 2); cout << tt << " ";
-		gotoxy(38, 40); //cout << scan;
+		gotoxy(38, 40);
 		mu1.unlock();
 		Sleep(1000); tt--;
 		//cout << "실행중  " << tt ;
@@ -151,8 +151,8 @@ void wordPrint() {
 				remem_Y[w] = y;
 				remem_C[w] = c;
 
-				Rcount[ind1++] = w;
-
+				Rcount.push_back(w);
+				mu2.lock();
 				if (user_time >= ChangeColor + 6) {
 					for (int i = 0; i < Wcount; i++) {
 						if (remem_C[i] > 2) {
@@ -173,7 +173,7 @@ void wordPrint() {
 					}
 
 				}
-				//mu2.lock();
+				
 				if (user_time >= ChangeColor && user_time <= ChangeColor + 5) {
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 					//gotoxy(30, 43); cout << "5초동안 글자색이 바뀌어 나옵니다.";
@@ -181,7 +181,6 @@ void wordPrint() {
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Changec[c]);
 					cout << wordList.at(w); // 단어 출력
 					remem_C[w] = c + 3;
-					Rcount.push_back(w);
 				}
 				else {
 					gotoxy(30, 43); cout << "                                       ";
@@ -189,8 +188,8 @@ void wordPrint() {
 					gotoxy(x, y);
 					cout << wordList.at(w); // 단어 출력
 				}
-				//gotoxy(38, 40); //cout << scan;
-				//mu2.unlock();
+				gotoxy(38, 40); //cout << scan;
+				mu2.unlock();
 			}
 			Sleep(word_speed); // 단어 뜨는 속도 조절
 		}
@@ -246,11 +245,13 @@ void wordRemove() {
 	while (wr) {
 		Sleep(remove_speed);
 
-		int index = Rcount.at(ind2++);
-		int x = remem_X[index];
-		int y = remem_Y[index];
-		gotoxy(x, y); cout << "         ";
-		remem_C[index] = 100; // 점수 오르는거 방지
+			int index = Rcount.at(ind2);
+			int x = remem_X[index];
+			int y = remem_Y[index];
+			gotoxy(x, y); cout << "         ";
+			remem_C[index] = 100; // 점수 오르는거 방지
+			ind2++;
+
 	}
 }
 
