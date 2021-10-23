@@ -97,7 +97,7 @@ void Play() {
 
 void Start_Game() {
 	
-	ip = 1; op = 1;
+	ip = 1; op = 1; wr = 1;
 
 	thread t1(timer);
 
@@ -151,8 +151,8 @@ void wordPrint() {
 				remem_Y[w] = y;
 				remem_C[w] = c;
 
-				Rcount.push_back(w);
-				mu2.lock();
+				Rcount[ind1++] = w;
+				//mu2.lock();
 				if (user_time >= ChangeColor + 6) {
 					for (int i = 0; i < Wcount; i++) {
 						if (remem_C[i] > 2) {
@@ -188,9 +188,10 @@ void wordPrint() {
 					gotoxy(x, y);
 					cout << wordList.at(w); // 단어 출력
 				}
-				gotoxy(38, 40); //cout << scan;
-				mu2.unlock();
+				 //cout << scan;
+				//mu2.unlock();
 			}
+			gotoxy(38, 40);
 			Sleep(word_speed); // 단어 뜨는 속도 조절
 		}
 
@@ -229,7 +230,8 @@ void wordScan() {
 						default: break;
 						}
 						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-						gotoxy(15, 3); cout << user_score << "  ";
+						//gotoxy(15, 3); cout << user_score << "  ";
+						gotoxy(3, 3); cout << "현재 점수 : " << user_score;
 					}
 
 
@@ -245,13 +247,16 @@ void wordRemove() {
 	while (wr) {
 		Sleep(remove_speed);
 
-			int index = Rcount.at(ind2);
-			int x = remem_X[index];
-			int y = remem_Y[index];
-			gotoxy(x, y); cout << "         ";
-			remem_C[index] = 100; // 점수 오르는거 방지
-			ind2++;
 
+			if (wordc[ind2] == 2) ind2++;
+			else {
+				int index = Rcount.at(ind2);
+				int x = remem_X[index];
+				int y = remem_Y[index];
+				gotoxy(x, y); cout << "         ";
+				remem_C[index] = 100; // 점수 오르는거 방지
+				ind2++;
+			}
 	}
 }
 
