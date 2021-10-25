@@ -103,7 +103,7 @@ void Start_Game() {
 
 	thread t2(wordPrint);
 	thread t3(wordRemove);
-	thread t4(GameTime);
+	//thread t4(GameTime);
 	thread t5(wordScan);
 
 	t1.join();
@@ -111,7 +111,7 @@ void Start_Game() {
 	t2.join();
 	t5.join();
 	t3.join();
-	t4.join();
+	//t4.join();
 	
 
 	
@@ -119,11 +119,11 @@ void Start_Game() {
 void timer() {
 	int tt = 25;
 	while (tt != 0) {
-		mu1.lock();
+		mu2.lock();
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		gotoxy(94, 2); cout << tt << " ";
 		gotoxy(38, 40);
-		mu1.unlock();
+		mu2.unlock();
 		Sleep(1000); tt--;
 		//cout << "실행중  " << tt ;
 	}
@@ -152,7 +152,7 @@ void wordPrint() {
 				remem_C[w] = c;
 
 				Rcount[ind1++] = w;
-				//mu2.lock();
+				mu1.lock();
 				if (user_time >= ChangeColor + 6) {
 					for (int i = 0; i < Wcount; i++) {
 						if (remem_C[i] > 2) {
@@ -187,11 +187,13 @@ void wordPrint() {
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color[c]);
 					gotoxy(x, y);
 					cout << wordList.at(w); // 단어 출력
+
 				}
 				 //cout << scan;
-				//mu2.unlock();
+				gotoxy(38, 40);
+				mu1.unlock();
 			}
-			gotoxy(38, 40);
+			
 			Sleep(word_speed); // 단어 뜨는 속도 조절
 		}
 
@@ -199,9 +201,10 @@ void wordPrint() {
 
 void wordScan() {
 		while (ip) {
+			GameTime();
 			//gotoxy(2, 0); cout << "                                  ";
+			mu1.lock();
 			if (_kbhit()) {
-				mu3.lock();
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 				gotoxy(37, 40);  cin >> scan;
 				gotoxy(37, 40); cout << "                                  ";
@@ -234,12 +237,10 @@ void wordScan() {
 						gotoxy(3, 3); cout << "현재 점수 : " << user_score;
 					}
 
-
 				}
-				mu3.unlock();
 			} // end of if
 			//scan = "";
-			
+			mu1.unlock();
 		}
 }
 
@@ -261,7 +262,7 @@ void wordRemove() {
 }
 
 void GameTime() {
-	while (true) {
+	//while (true) {
 		endTime = clock();
 		user_time = (double)(endTime - startTime) / (CLOCKS_PER_SEC);
 
@@ -305,7 +306,7 @@ void GameTime() {
 			}
 
 		}
-	}
+	//}
 }
 
 void Score() {
