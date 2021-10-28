@@ -4,7 +4,7 @@
 #include <mutex>
 #include "TypingGame.h"
 
-std::mutex mu1, mu2, mu3;
+std::mutex mu1, mu2, mu3, mu4;
 
 time_t startTime = 0, endTime = 0, cur_time = 0, pass_time = 0; // 게임 시간 제한
 double user_time; // 사용자 게임 시간
@@ -108,8 +108,8 @@ void Start_Game() {
 
 	t1.join();
 
-	t2.join();
 	t5.join();
+	t2.join();
 	t3.join();
 	//t4.join();
 	
@@ -119,11 +119,11 @@ void Start_Game() {
 void timer() {
 	int tt = 25;
 	while (tt != 0) {
-		mu2.lock();
+		mu1.lock();
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		gotoxy(94, 2); cout << tt << " ";
 		gotoxy(38, 40);
-		mu2.unlock();
+		mu1.unlock();
 		Sleep(1000); tt--;
 		//cout << "실행중  " << tt ;
 	}
@@ -190,7 +190,7 @@ void wordPrint() {
 
 				}
 				 //cout << scan;
-				gotoxy(38, 40);
+				gotoxy(37, 40);
 				mu1.unlock();
 			}
 			
@@ -203,7 +203,7 @@ void wordScan() {
 		while (ip) {
 			GameTime();
 			//gotoxy(2, 0); cout << "                                  ";
-			mu1.lock();
+			mu3.lock();
 			if (_kbhit()) {
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 				gotoxy(37, 40);  cin >> scan;
@@ -240,24 +240,25 @@ void wordScan() {
 				}
 			} // end of if
 			//scan = "";
-			mu1.unlock();
+			mu3.unlock();
 		}
 }
 
 void wordRemove() {
 	while (wr) {
 		Sleep(remove_speed);
-
-
 			if (wordc[ind2] == 2) ind2++;
 			else {
+				mu3.lock();
 				int index = Rcount.at(ind2);
 				int x = remem_X[index];
 				int y = remem_Y[index];
-				gotoxy(x, y); cout << "         ";
+				gotoxy(x, y); cout << "          ";
 				remem_C[index] = 100; // 점수 오르는거 방지
 				ind2++;
+				mu3.unlock();
 			}
+			
 	}
 }
 
