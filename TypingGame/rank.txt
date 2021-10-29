@@ -1,3 +1,14 @@
 
 yuna	5435
 ha	1966
+test	5718
+dsf	8146
+test7	5570
+test9	5831
+test26	3891
+test28	5932
+test30	1321
+test36	5911
+test	2589
+test38	2416
+test46	5361
