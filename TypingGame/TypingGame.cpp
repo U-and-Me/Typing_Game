@@ -4,7 +4,7 @@
 #include <mutex>
 #include "TypingGame.h"
 
-std::mutex mu1, mu2, mu3;
+std::mutex mu1, mu2;
 
 time_t startTime = 0, endTime = 0; // 게임 시간 제한
 double user_time; // 사용자 게임 시간
@@ -28,7 +28,6 @@ int Changec[3] = { 11, 13, 14 }; // 하늘, 보라, 노랑
 vector<int> remem_X(150);
 vector<int> remem_Y(150);
 vector<int> remem_C(150);
-
 string scan; // 단어 입력받기
 int ChangeColor; // 바뀔 단어색 정하기
 int Sign[3]; // 0 : 음수, 1 : 양수
@@ -38,9 +37,8 @@ int Cscore; // 점수 정하는 변수
 char name[10]; // 사용자 이름
 int user_score = 0; // 사용자 점수
 int Rcount[150] = { 0, }; // 단어 지우는 배열
-int ind1 = 0; // wordPrint() 에서 사용
+int ind1 = 0;
 int ind2 = 0;
-
 int ip = 1, op = 1, wr = 1;
 
 void saveScore() {
@@ -246,8 +244,7 @@ void wordRemove() {
 				int index = Rcount[ind2];
 				int x = remem_X[index];
 				int y = remem_Y[index];
-				gotoxy(x, y);
-				cout << "          ";
+				gotoxy(x, y); cout << "          ";
 				remem_C[index] = 100;
 				Rcount[ind2] = Wcount;
 				m = 2;
