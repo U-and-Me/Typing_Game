@@ -21,13 +21,10 @@ void Start_Game();
 void timer();
 void Info();
 
-//int wordc[150]; // 단어 중복 방지
-//vector<int> wordc(150);
 int wordc[150];
 int level = 1; // 총 3단계
 int color[3] = { 1, 2, 4 }; // 파, 초, 빨
 int Changec[3] = { 11, 13, 14 }; // 하늘, 보라, 노랑
-//int remem_W[count][3] = { 0, }; // 점수체크
 vector<int> remem_X(150);
 vector<int> remem_Y(150);
 vector<int> remem_C(150);
@@ -41,7 +38,6 @@ int Cscore; // 점수 정하는 변수
 char name[10]; // 사용자 이름
 int user_score = 0; // 사용자 점수
 int Rcount[150] = { 0, }; // 단어 지우는 배열
-//vector<int> Rcount(150, 0);
 int ind1 = 0; // wordPrint() 에서 사용
 int ind2 = 0;
 
@@ -71,7 +67,6 @@ void Play() {
 	system("cls");
 	srand((unsigned)time(0)); // 단어색 바뀔 시간 정하기
 	ChangeColor = rand() % 17 + 3; // 3초에서 19초 사이
-
 
 	screen();
 
@@ -104,30 +99,13 @@ void Start_Game() {
 
 	thread t2(wordPrint);
 	thread t3(wordRemove);
-	//thread t4(GameTime);
 	thread t5(wordScan);
 
 	t1.join();
-
 	t5.join();
 	t2.join();
 	t3.join();
-	//t4.join();
 	
-
-	
-}
-void timer() {
-	int tt = 25;
-	while (tt != 0) {
-		mu1.lock();
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-		gotoxy(94, 2); cout << tt << " ";
-		gotoxy(38, 40);
-		mu1.unlock();
-		Sleep(1000); tt--;
-		//cout << "실행중  " << tt ;
-	}
 }
 
 void Info() {
@@ -135,6 +113,18 @@ void Info() {
 	gotoxy(3, 3); cout << "현재 점수 : " << user_score;
 	gotoxy(82, 2); cout << "게임 시간 : 25";
 	gotoxy(30, 40); cout << "입력 : ";
+}
+
+void timer() {
+	int tt = 25;
+	while (tt != 0) {
+		mu1.lock();
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+		gotoxy(94, 2); cout << tt << " ";
+		gotoxy(39, 40);
+		mu1.unlock();
+		Sleep(1000); tt--;
+	}
 }
 
 void wordPrint() {
@@ -190,14 +180,12 @@ void wordPrint() {
 					cout << wordList.at(w); // 단어 출력
 
 				}
-				 //cout << scan;
-				gotoxy(38, 40);
+				gotoxy(39, 40);
 				mu1.unlock();
 			}
 			
 			Sleep(word_speed); // 단어 뜨는 속도 조절
 		}
-
 }
 
 void wordScan() {
@@ -214,6 +202,7 @@ void wordScan() {
 						wordc[i] = 2; // 단어 맞췄을 때
 						Rcount[ind2] = Wcount;
 						ind2++;
+
 						int x = remem_X[i];
 						int y = remem_Y[i];
 						int color = remem_C[i];
@@ -238,10 +227,8 @@ void wordScan() {
 						gotoxy(12, 3); cout << "         ";
 						gotoxy(3, 3); cout << "현재 점수 : " << user_score;
 					}
-
 				}
-			} // end of if
-			//scan = "";
+			} 
 			mu2.unlock();
 		}
 }
@@ -251,8 +238,8 @@ void wordRemove() {
 		Sleep(remove_speed);
 
 		mu2.lock();
-		int t = 1;
-		while (t == 1) {
+		int m = 1;
+		while (m == 1) {
 			
 			if (Rcount[ind2] == Wcount) ind2++;
 			else {
@@ -263,7 +250,7 @@ void wordRemove() {
 				cout << "          ";
 				remem_C[index] = 100;
 				Rcount[ind2] = Wcount;
-				t = 2;
+				m = 2;
 			}
 		}
 		mu2.unlock();
@@ -272,60 +259,46 @@ void wordRemove() {
 }
 
 void GameTime() {
-	//while (true) {
-		endTime = clock();
-		user_time = (double)(endTime - startTime) / (CLOCKS_PER_SEC);
+	endTime = clock();
+	user_time = (double)(endTime - startTime) / (CLOCKS_PER_SEC);
 
-		if (user_time > 25) {
-			ip = 0; op = 0; wr = 0; ind1 = 0; ind2 = 0;
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-			system("cls"); screen();
-			Score();
-			Sleep(3000);
+	if (user_time > 25) {
+		ip = 0; op = 0; wr = 0; 
+		ind1 = 0; ind2 = 0;
+		for (int i = 0; i < Wcount; i++) {
+			wordc[i] = 0;
+			Rcount[i] = 0;
+			remem_X[i] = 0;
+			remem_Y[i] = 0;
+			remem_C[i] = 0;
+		}
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+		system("cls"); screen();
+		Score();
+		Sleep(3000);
+		system("cls");
+		if (level == 1) {;
 			system("cls");
-			if (level == 1) {
-				//gotoxy(37, 20); cout << "2단계로 올라갑니다!!";
-				//Sleep(1500);
-				system("cls");
-				level++; // 2단계
-				user_time = 0; startTime = 0; endTime = 0; word_speed = 1000; remove_speed = 1800;
-				for (int i = 0; i < Wcount; i++) {
-					wordc[i] = 0;
-					Rcount[i] = 0;
-					remem_X[i] = 0;
-					remem_Y[i] = 0;
-					remem_C[i] = 0;
-				}
-				Play();
-
-			}
-			else if (level == 2) {
-				//gotoxy(37, 20); cout << "3단계로 올라갑니다!!";
-				//Sleep(1500);
-				system("cls");
-				level++; // 3단계
-				user_time = 0; startTime = 0; endTime = 0; word_speed = 800; remove_speed = 1300;
-				for (int i = 0; i < Wcount; i++) {
-					wordc[i] = 0;
-					Rcount[i] = 0;
-					remem_X[i] = 0;
-					remem_Y[i] = 0;
-					remem_C[i] = 0;
-				}
-				Play();
-			}
-			else {
-				level = 1;
-				saveScore();
-				gotoxy(37, 20); cout << "*** 게 임 종 료 ***";
-				Sleep(1500);
-				//gotoxy(30, 20); cout << "2초 후 자동으로 메인으로 넘어갑니다.";
-				//Sleep(2000);
-				system("cls");
-				main();
-			}
+			level++; // 2단계
+			user_time = 0; startTime = 0; endTime = 0; word_speed = 1000; remove_speed = 1800;
+			Play();
 
 		}
+		else if (level == 2) {
+			system("cls");
+			level++; // 3단계
+			user_time = 0; startTime = 0; endTime = 0; word_speed = 800; remove_speed = 1300;
+			Play();
+		}
+		else {
+			level = 1;
+			saveScore();
+			gotoxy(37, 20); cout << "*** 게 임 종 료 ***";
+			Sleep(1500);
+			system("cls");
+			main();
+		}
+	}
 }
 
 void Score() {
@@ -343,4 +316,3 @@ void Score() {
 	gotoxy(65, 21); cout << "== ";
 	gotoxy(30, 22); cout << "=====================================";
 }
-

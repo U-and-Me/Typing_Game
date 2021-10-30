@@ -66,9 +66,6 @@ void Rank() {
         if (users[i] == " " || scores[i] == 0) continue;
         gotoxy(x1[i], 26);
         cout << users[i] << "  " << scores[i];
-       // gotoxy(x2[i], 27);
-       // cout << scores[i];
-
     }
 
 
@@ -82,7 +79,6 @@ void Rank() {
     }
 
 }
-
 
 void rank_logo() {
 	
@@ -140,5 +136,4 @@ void rank_logo() {
     gotoxy(76, 23);
     cout << "#######";
                                              
-
 }

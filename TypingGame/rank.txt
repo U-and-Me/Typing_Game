@@ -32,3 +32,6 @@ te	4501
 wwww	4238
 dddd	6943
 yyuu	4160
+yy	5626
+uuu	4153
+Una	5247

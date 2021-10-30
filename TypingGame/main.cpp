@@ -11,8 +11,6 @@ int main() {
 	system("title TypingGame");
 	CursorView();
 
-
-	
 	char User_ans; // 사용자 입력
 
 	while (1) {
@@ -45,7 +43,7 @@ int main() {
 			main();
 
 		}
-	} // End of While
+	}
 	
 	return 0;
 }

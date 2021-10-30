@@ -21,9 +21,6 @@ void Word() {
 		}
 	}
 	bringWords();
-	//cout << wordList.size() << endl;
-
-	//Sleep(4000);
 }
 
 void bringWords() {
