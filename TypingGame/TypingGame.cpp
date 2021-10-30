@@ -140,7 +140,7 @@ void Info() {
 void wordPrint() {
 		srand((unsigned)time(0));
 		while (op) {
-			int x = rand() % 80 + 3; // 3 ~ 82
+			int x = rand() % 79 + 4; // 4 ~ 82
 			int y = rand() % 32 + 5; // 5 ~ 36
 			int w = rand() % Wcount; // 0 ~ 149
 			int c = rand() % 3; // 0 ~ 2
@@ -191,7 +191,7 @@ void wordPrint() {
 
 				}
 				 //cout << scan;
-				gotoxy(37, 40);
+				gotoxy(38, 40);
 				mu1.unlock();
 			}
 			
@@ -212,7 +212,8 @@ void wordScan() {
 				for (int i = 0; i < Wcount; i++) {
 					if (scan == wordList.at(i)) { // 입력한 단어가 맞을 때
 						wordc[i] = 2; // 단어 맞췄을 때
-						Rcount[ind2++] = Wcount;
+						Rcount[ind2] = Wcount;
+						ind2++;
 						int x = remem_X[i];
 						int y = remem_Y[i];
 						int color = remem_C[i];
@@ -234,7 +235,6 @@ void wordScan() {
 						default: break;
 						}
 						SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-						//gotoxy(15, 3); cout << user_score << "  ";
 						gotoxy(12, 3); cout << "         ";
 						gotoxy(3, 3); cout << "현재 점수 : " << user_score;
 					}
@@ -251,20 +251,19 @@ void wordRemove() {
 		Sleep(remove_speed);
 
 		mu2.lock();
-		
-		while (true) {
+		int t = 1;
+		while (t == 1) {
 			
 			if (Rcount[ind2] == Wcount) ind2++;
 			else {
 				int index = Rcount[ind2];
 				int x = remem_X[index];
 				int y = remem_Y[index];
-				gotoxy(x, y); //cout << x << " " << y << " " << ind2;
+				gotoxy(x, y);
 				cout << "          ";
-				//cout << "000000000000";
 				remem_C[index] = 100;
 				Rcount[ind2] = Wcount;
-				break;
+				t = 2;
 			}
 		}
 		mu2.unlock();
@@ -278,19 +277,18 @@ void GameTime() {
 		user_time = (double)(endTime - startTime) / (CLOCKS_PER_SEC);
 
 		if (user_time > 25) {
-			ip = 0; op = 0; wr = 0; ind2 = 0; ind1 = 0;
-			//wordc.clear();
+			ip = 0; op = 0; wr = 0; ind1 = 0; ind2 = 0;
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 			system("cls"); screen();
 			Score();
 			Sleep(3000);
 			system("cls");
 			if (level == 1) {
-				gotoxy(37, 20); cout << "2단계로 올라갑니다!!";
-				Sleep(1500);
+				//gotoxy(37, 20); cout << "2단계로 올라갑니다!!";
+				//Sleep(1500);
 				system("cls");
 				level++; // 2단계
-				user_time = 0; startTime = 0; endTime = 0; word_speed = 1000; remove_speed = 2300;
+				user_time = 0; startTime = 0; endTime = 0; word_speed = 1000; remove_speed = 1800;
 				for (int i = 0; i < Wcount; i++) {
 					wordc[i] = 0;
 					Rcount[i] = 0;
@@ -302,11 +300,11 @@ void GameTime() {
 
 			}
 			else if (level == 2) {
-				gotoxy(37, 20); cout << "3단계로 올라갑니다!!";
-				Sleep(1500);
+				//gotoxy(37, 20); cout << "3단계로 올라갑니다!!";
+				//Sleep(1500);
 				system("cls");
 				level++; // 3단계
-				user_time = 0; startTime = 0; endTime = 0; word_speed = 800; remove_speed = 1500;
+				user_time = 0; startTime = 0; endTime = 0; word_speed = 800; remove_speed = 1300;
 				for (int i = 0; i < Wcount; i++) {
 					wordc[i] = 0;
 					Rcount[i] = 0;

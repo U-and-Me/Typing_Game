@@ -10,50 +10,32 @@ void gotoxy(int x, int y) {
 
 void logo() {
 	system("cls");
-	
-	for (int i = 16; i <= 76; i++) {
-		gotoxy(i, 6); cout << "-";
-		gotoxy(i, 20); cout << "-";
+	//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
+	/*
+	for (int i = 16; i <= 79; i++) {
+		gotoxy(i, 6); cout << "□";
+		gotoxy(i, 20); cout << "□";
 	}
+	*/
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13);
 
-	gotoxy(25, 10); cout << " _____ __   ________  _____  _   _  _____ ";
-	gotoxy(25, 11); cout << "|_   _|\\ \\ / /| ___ \\|_   _|| \\ | ||  __ \\";
-	gotoxy(25, 12); cout << "  | |   \\ V / | |_/ /  | |  |  \\| || |  \\/";
-	gotoxy(25, 13); cout << "  | |    \\ /  |  __/   | |  | . ` || | __ ";
-	gotoxy(25, 14); cout << "  | |    | |  | |     _| |_ | |\\  || |_\\ \\";
-	gotoxy(25, 15); cout << "  \\_/    \\_/  \\_|     \\___/ \\_| \\_/ \\____/";
-
+	gotoxy(19, 4); cout << "O))) O))))))O))      O))O)))))))  O))O)))     O))   O)))) ";
+	gotoxy(22, 5); cout << "	O))     O))    O)) O))    O))O))O) O))   O)) O)    O))";
+	gotoxy(22, 6); cout << "	O))      O)) O))   O))    O))O))O)) O))  O))O))";
+	gotoxy(22, 7); cout << "	O))        O))     O)))))))  O))O))  O)) O))O))";
+	gotoxy(22, 8); cout << "	O))        O))     O))       O))O))   O) O))O))   O))))";
+	gotoxy(22, 9); cout << "	O))        O))     O))       O))O))    O) )) O))    O)";
+	gotoxy(22, 10); cout << "	O))        O))     O))       O))O))      O))  O)))))";
 		
-                                                                                                 
- 
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 5);
 
-
-
-
-
-
-                                          
-                                          
-
-  
-        
-           
-  
-
-
-
-
-
-
-     
-           
-          
-          
- 
- 
-  
-
-
+	gotoxy(26, 13); cout << "   O))))         O)       O))       O))O))))))))";
+	gotoxy(26, 14); cout << " O)    O))      O) ))     O) O))   O)))O))";
+	gotoxy(26, 15); cout << "O))            O)  O))    O)) O)) O O))O))";
+	gotoxy(26, 16); cout << "O))           O))   O))   O))  O))  O))O))))))";
+	gotoxy(26, 17); cout << "O))   O))))  O)))))) O))  O))   O)  O))O))";
+	gotoxy(26, 18); cout << " O))    O)  O))       O)) O))       O))O))";
+	gotoxy(26, 19); cout << "  O)))))   O))         O))O))       O))O))))))))";
 
 
 
@@ -165,9 +147,10 @@ void logo() {
 }
 
 void Menu() {
-	gotoxy(11, 30); cout << "1. 게임 시작";
-	gotoxy(31, 30); cout << "2. 도움말";
-	gotoxy(51, 30); cout << "3. 랭킹보기";
-	gotoxy(71, 30); cout << "4. 종료하기";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+	gotoxy(14, 28); cout << "1. 게임 시작";
+	gotoxy(34, 28); cout << "2. 도움말";
+	gotoxy(54, 28); cout << "3. 랭킹보기";
+	gotoxy(74, 28); cout << "4. 종료하기";
 
 }

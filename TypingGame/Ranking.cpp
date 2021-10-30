@@ -9,9 +9,7 @@ void rank_logo();
 int len = 0; // 파일에 있는 데이터 개수
 string users[100];
 int scores[100];
-int x1[3] = { 17, 46, 77 };
-int x2[3] = { 18, 47, 78 };
-
+int x1[3] = { 15, 44, 75 };
 
 void Rank() {
 
@@ -62,13 +60,14 @@ void Rank() {
         }
     }
 
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 
     for (int i = 0; i < 3; i++) {
         if (users[i] == " " || scores[i] == 0) continue;
         gotoxy(x1[i], 26);
-        cout << users[i];
-        gotoxy(x2[i], 27);
-        cout << scores[i];
+        cout << users[i] << "  " << scores[i];
+       // gotoxy(x2[i], 27);
+       // cout << scores[i];
 
     }
 
@@ -87,6 +86,7 @@ void Rank() {
 
 void rank_logo() {
 	
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
     gotoxy(26, 5);
     cout << "8888888b.         d8888 888b    888 888    d8P ";
     gotoxy(26, 6);
@@ -104,7 +104,8 @@ void rank_logo() {
     gotoxy(26, 12);
     cout << "888   T88b d88P     888 888    Y888 888    Y88b ";
 
-    
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+
     gotoxy(16, 19);
     cout << "  ###";
     gotoxy(16, 20);

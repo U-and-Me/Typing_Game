@@ -40,7 +40,7 @@ int main() {
 			Word();
 			break;
 		default:
-			gotoxy(35, 20); ; cout << "해당 번호는 존재하지 않습니다!";
+			gotoxy(33, 20); ; cout << "해당 번호는 존재하지 않습니다!";
 			Sleep(1000);
 			main();
 

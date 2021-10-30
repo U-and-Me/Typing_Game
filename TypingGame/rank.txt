@@ -25,3 +25,10 @@ test32	3592
 test33	6439
 test34	5212
 test36	4673
+yuna	7061
+fff	5648
+qqqq	5129
+te	4501
+wwww	4238
+dddd	6943
+yyuu	4160
