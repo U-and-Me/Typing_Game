@@ -12,3 +12,16 @@ test36	5911
 test	2589
 test38	2416
 test46	5361
+test3	6867
+test4	5644
+test6	5654
+test24	7157
+test25	5676
+test26	4997
+test27	5093
+test29	6037
+test30	4210
+test32	3592
+test33	6439
+test34	5212
+test36	4673

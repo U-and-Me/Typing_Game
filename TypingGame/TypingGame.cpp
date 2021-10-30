@@ -4,7 +4,7 @@
 #include <mutex>
 #include "TypingGame.h"
 
-std::mutex mu1, mu2;
+std::mutex mu1, mu2, mu3;
 
 time_t startTime = 0, endTime = 0; // 게임 시간 제한
 double user_time; // 사용자 게임 시간
@@ -152,7 +152,7 @@ void wordPrint() {
 				remem_Y[w] = y;
 				remem_C[w] = c;
 
-				Rcount[w] = w;
+				Rcount[ind1++] = w;
 				mu1.lock();
 				if (user_time >= ChangeColor + 6) {
 					for (int i = 0; i < Wcount; i++) {
@@ -203,7 +203,6 @@ void wordPrint() {
 void wordScan() {
 		while (ip) {
 			GameTime();
-			//gotoxy(2, 0); cout << "                                  ";
 			mu2.lock();
 			if (_kbhit()) {
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
@@ -213,6 +212,7 @@ void wordScan() {
 				for (int i = 0; i < Wcount; i++) {
 					if (scan == wordList.at(i)) { // 입력한 단어가 맞을 때
 						wordc[i] = 2; // 단어 맞췄을 때
+						Rcount[ind2++] = Wcount;
 						int x = remem_X[i];
 						int y = remem_Y[i];
 						int color = remem_C[i];
@@ -249,40 +249,25 @@ void wordScan() {
 void wordRemove() {
 	while (wr) {
 		Sleep(remove_speed);
-		/*
-		while (wordc[ind2] == 2) {
-			ind2++;
-		}*/
+
 		mu2.lock();
-
-		for (int i = 0; i < Wcount; i++) {
-			if (wordc[i] == 2 || wordc[i] == 3) continue;
-
-			//int index = Rcount[i];
-			int x = remem_X[i];
-			int y = remem_Y[i];
-			gotoxy(x, y); cout << "222222222";
-			remem_C[i] = 100; // 점수 오르는거 방지
-			wordc[i] = 3;
-			i = Wcount;
-		}
-
-		mu2.unlock();
-		/*
-		if (wordc[ind2] == 3) {
-			ind2++;
-		}
 		
-		else {
-				mu2.lock();
+		while (true) {
+			
+			if (Rcount[ind2] == Wcount) ind2++;
+			else {
 				int index = Rcount[ind2];
 				int x = remem_X[index];
 				int y = remem_Y[index];
-				gotoxy(x, y); cout << "111111111";
-				remem_C[index] = 100; // 점수 오르는거 방지
-				mu2.unlock();
+				gotoxy(x, y); //cout << x << " " << y << " " << ind2;
+				cout << "          ";
+				//cout << "000000000000";
+				remem_C[index] = 100;
+				Rcount[ind2] = Wcount;
+				break;
+			}
 		}
-		*/
+		mu2.unlock();
 
 	}
 }
@@ -293,7 +278,7 @@ void GameTime() {
 		user_time = (double)(endTime - startTime) / (CLOCKS_PER_SEC);
 
 		if (user_time > 25) {
-			ip = 0; op = 0; wr = 0;
+			ip = 0; op = 0; wr = 0; ind2 = 0; ind1 = 0;
 			//wordc.clear();
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 			system("cls"); screen();
