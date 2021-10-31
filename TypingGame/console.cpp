@@ -8,7 +8,7 @@ void gotoxy(int x, int y) {
 void logo() {
 	system("cls");
 
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
 
 	gotoxy(19, 4); cout << "O))) O))))))O))      O))O)))))))  O))O)))     O))   O)))) ";
 	gotoxy(22, 5); cout << "	O))     O))    O)) O))    O))O))O) O))   O)) O)    O))";
@@ -18,7 +18,7 @@ void logo() {
 	gotoxy(22, 9); cout << "	O))        O))     O))       O))O))    O) )) O))    O)";
 	gotoxy(22, 10); cout << "	O))        O))     O))       O))O))      O))  O)))))";
 		
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 5);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
 
 	gotoxy(26, 13); cout << "   O))))         O)       O))       O))O))))))))";
 	gotoxy(26, 14); cout << " O)    O))      O) ))     O) O))   O)))O))";
