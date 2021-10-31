@@ -133,7 +133,6 @@ void wordPrint() {
 			int w = rand() % Wcount; // 0 ~ 149
 			int c = rand() % 3; // 0 ~ 2
 
-
 			if (wordc[w] != 1 || wordc[w] != 2) { // 중복체크
 				wordc[w] = 1; // 중복
 				remem_X[w] = x;
@@ -141,6 +140,7 @@ void wordPrint() {
 				remem_C[w] = c;
 
 				Rcount[ind1++] = w;
+
 				mu1.lock();
 				if (user_time >= ChangeColor + 6) {
 					for (int i = 0; i < Wcount; i++) {
@@ -274,17 +274,16 @@ void GameTime() {
 		Score();
 		Sleep(3000);
 		system("cls");
-		if (level == 1) {;
+		if (level == 1) {
 			system("cls");
 			level++; // 2단계
 			user_time = 0; startTime = 0; endTime = 0; word_speed = 1000; remove_speed = 1500;
 			Play();
-
 		}
 		else if (level == 2) {
 			system("cls");
 			level++; // 3단계
-			user_time = 0; startTime = 0; endTime = 0; word_speed = 500; remove_speed = 1000;
+			user_time = 0; startTime = 0; endTime = 0; word_speed = 800; remove_speed = 1300;
 			Play();
 		}
 		else {
