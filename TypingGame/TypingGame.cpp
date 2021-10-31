@@ -8,8 +8,8 @@ std::mutex mu1, mu2;
 
 time_t startTime = 0, endTime = 0; // 게임 시간 제한
 double user_time; // 사용자 게임 시간
-int word_speed = 2000; // 단어 뜨는 속도
-int remove_speed = 4000; // 없어지는 속도
+int word_speed = 1700; // 단어 뜨는 속도
+int remove_speed = 3000; // 없어지는 속도
 
 void wordPrint(); // 단어 출력
 void wordScan();  // 단어 입력
@@ -277,14 +277,14 @@ void GameTime() {
 		if (level == 1) {;
 			system("cls");
 			level++; // 2단계
-			user_time = 0; startTime = 0; endTime = 0; word_speed = 1000; remove_speed = 1800;
+			user_time = 0; startTime = 0; endTime = 0; word_speed = 1000; remove_speed = 1500;
 			Play();
 
 		}
 		else if (level == 2) {
 			system("cls");
 			level++; // 3단계
-			user_time = 0; startTime = 0; endTime = 0; word_speed = 800; remove_speed = 1300;
+			user_time = 0; startTime = 0; endTime = 0; word_speed = 500; remove_speed = 1000;
 			Play();
 		}
 		else {
