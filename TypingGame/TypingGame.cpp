@@ -25,9 +25,9 @@ int wordc[150];
 int level = 1; // 총 3단계
 int color[3] = { 1, 2, 4 }; // 파, 초, 빨
 int Changec[3] = { 11, 13, 14 }; // 하늘, 보라, 노랑
-vector<int> remem_X(150);
-vector<int> remem_Y(150);
-vector<int> remem_C(150);
+vector<int> remem_X(151);
+vector<int> remem_Y(151);
+vector<int> remem_C(151);
 string scan; // 단어 입력받기
 int ChangeColor; // 바뀔 단어색 정하기
 int Sign[3]; // 0 : 음수, 1 : 양수
@@ -262,6 +262,7 @@ void GameTime() {
 	if (user_time > 25) {
 		ip = 0; op = 0; wr = 0; 
 		ind1 = 0; ind2 = 0;
+		scan = "";
 		for (int i = 0; i < Wcount; i++) {
 			wordc[i] = 0;
 			Rcount[i] = 0;
