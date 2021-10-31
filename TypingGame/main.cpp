@@ -25,18 +25,18 @@ int main() {
 		switch (User_ans) {
 		case '1': // 게임 시작
 			Play();
+			system("pause");
 			break;
 		case '2': // 도움말
 			game_help();
+			system("pause");
 			break;
 		case '3': // 랭킹보기
 			Rank();
+			system("pause");
 			break;
 		case '4': // 종료하기
 			exit(0); 
-		case 'w': 
-			Word();
-			break;
 		default:
 			gotoxy(33, 20); ; cout << "해당 번호는 존재하지 않습니다!";
 			Sleep(1000);
@@ -44,7 +44,7 @@ int main() {
 
 		}
 	}
-	
+
 	return 0;
 }
 
