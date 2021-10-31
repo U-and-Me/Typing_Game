@@ -25,9 +25,7 @@ int wordc[150];
 int level = 1; // 총 3단계
 int color[3] = { 1, 2, 4 }; // 파, 초, 빨
 int Changec[3] = { 11, 13, 14 }; // 하늘, 보라, 노랑
-vector<int> remem_X(151);
-vector<int> remem_Y(151);
-vector<int> remem_C(151);
+int remem[150][3];
 string scan; // 단어 입력받기
 int ChangeColor; // 바뀔 단어색 정하기
 int Sign[3]; // 0 : 음수, 1 : 양수
@@ -134,20 +132,22 @@ void wordPrint() {
 			int c = rand() % 3; // 0 ~ 2
 
 			if (wordc[w] != 1 || wordc[w] != 2) { // 중복체크
+
 				wordc[w] = 1; // 중복
-				remem_X[w] = x;
-				remem_Y[w] = y;
-				remem_C[w] = c;
+
+				remem[w][0] = x;
+				remem[w][1] = y;
+				remem[w][2] = c;
 
 				Rcount[ind1++] = w;
 
 				mu1.lock();
 				if (user_time >= ChangeColor + 6) {
 					for (int i = 0; i < Wcount; i++) {
-						if (remem_C[i] > 2) {
-							int x = remem_X[i];
-							int y = remem_Y[i];
-							remem_C[i] = 100;
+						if (remem[i][2] > 2) {
+							int x = remem[i][0];
+							int y = remem[i][1];
+							remem[i][2] = 100;
 
 							gotoxy(x, y); cout << "          "; // 단어 지우기
 						}
@@ -169,7 +169,7 @@ void wordPrint() {
 					gotoxy(x, y);
 					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Changec[c]);
 					cout << wordList.at(w); // 단어 출력
-					remem_C[w] = c + 3;
+					remem[w][2] = c + 3;
 				}
 				else {
 					gotoxy(30, 43); cout << "                                       ";
@@ -201,9 +201,9 @@ void wordScan() {
 						Rcount[ind2] = Wcount;
 						ind2++;
 
-						int x = remem_X[i];
-						int y = remem_Y[i];
-						int color = remem_C[i];
+						int x = remem[i][0];
+						int y = remem[i][1];
+						int color = remem[i][2];
 
 						gotoxy(x, y); cout << "           "; // 단어 지우기
 						switch (color) {
@@ -242,10 +242,10 @@ void wordRemove() {
 			if (Rcount[ind2] == Wcount) ind2++;
 			else {
 				int index = Rcount[ind2];
-				int x = remem_X[index];
-				int y = remem_Y[index];
+				int x = remem[index][0];
+				int y = remem[index][1];
 				gotoxy(x, y); cout << "          ";
-				remem_C[index] = 100;
+				remem[index][2] = 100;
 				Rcount[ind2] = Wcount;
 				m = 2;
 			}
@@ -266,9 +266,9 @@ void GameTime() {
 		for (int i = 0; i < Wcount; i++) {
 			wordc[i] = 0;
 			Rcount[i] = 0;
-			remem_X[i] = 0;
-			remem_Y[i] = 0;
-			remem_C[i] = 0;
+			remem[i][0] = 0;
+			remem[i][1] = 0;
+			remem[i][2] = 0;
 		}
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 		system("cls"); screen();
