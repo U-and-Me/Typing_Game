@@ -8,4 +8,4 @@
 
 <h3> 관련 자료 </h3>
 [타이핑게임 발표자료]<br>
-(https://github.com/U-and-Me/Typing_Game/files/7520609/2104_TypingGame.pptx)
+(https://github.com/U-and-Me/Typing_Game/files/7520624/2104_TypingGame.pdf)
