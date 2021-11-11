@@ -4,7 +4,8 @@
 <h3> 개발환경/기술 </h3>
 개발일정 : 2021.08 ~ 2021.10 <br>
 사용기술 : C++ <br>
-개발환경 : Visual Studio <br>
+개발환경 : Visual Studio <br><br>
 
-[2104_TypingGame.pptx](https://github.com/U-and-Me/Typing_Game/files/7520609/2104_TypingGame.pptx)
+<h3> 관련 자료 </h3>
+[U-and-Me_TypingGame.pptx](https://github.com/U-and-Me/Typing_Game/files/7520609/U-and-Me_TypingGame.pptx)
 
