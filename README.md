@@ -7,5 +7,4 @@
 개발환경 : Visual Studio <br><br>
 
 <h3> 관련 자료 </h3>
-[U-and-Me_TypingGame.pptx](https://github.com/U-and-Me/Typing_Game/files/7520609/U-and-Me_TypingGame.pptx)
-
+[2104_TypingGame.pptx](https://github.com/U-and-Me/Typing_Game/files/7520609/2104_TypingGame.pptx)
